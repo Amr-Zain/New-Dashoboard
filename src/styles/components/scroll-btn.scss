@@ -1,0 +1,38 @@
+/* ---------------------
+Back top style
+----------------------- */
+.back-to-top.active {
+    transition: all 0.7s ease;
+}
+  
+  .back-to-top {
+    @apply fixed bg-primary flex flex-col gap-2 items-center justify-center 
+    text-white text-center z-[100] pointer-events-none opacity-0 bottom-5 left-4 rounded-md size-10 translate-y-10;
+  }
+  
+  .back-to-top svg {
+    transition: all 0.5s cubic-bezier(0.4, 1, 0.3, 1);
+  }
+  
+  .back-to-top.active {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .back-to-top.active:hover {
+    transform: scale(1.2) translateY(0);
+    box-shadow: 0 27px 20px -18px rgba(0, 0, 0, 0.35);
+  }
+  
+  .back-to-top.active:hover svg {
+    transform: scale(0.8) translateY(-7px);
+  }
+  
+  .back-to-top span {
+    @apply text-[7px] leading-[1px] font-bold absolute bottom-2.5 left-0 w-full text-center opacity-0 ;
+  }
+  
+  .back-to-top.active:hover span {
+    opacity: 1;
+  }

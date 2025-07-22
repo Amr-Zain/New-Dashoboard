@@ -1,0 +1,41 @@
+    .ql-editor img {
+      @apply my-5 h-32 w-64;
+    }
+    
+    .ql-editor img {
+      @apply ltr:ml-0 rtl:mr-0;
+    } 
+    
+    .ql-toolbar {
+      @apply box-border rounded-t-lg border border-[#e0e6ed]  px-2 py-1 #{!important};
+    }
+    
+    .ql-container {
+      @apply rounded-b-lg border border-t-0 border-[#e0e6ed] #{!important};
+    }
+    
+    .ql-editor {
+      @apply max-h-[200px] min-h-[200px] overflow-auto;
+    }
+
+    .ql-stroke {
+      @apply stroke-[#888ea8];
+    }
+    .ql-editor {
+        @apply text-start;
+    }
+    .ql-picker,
+    .ql-editor h1,
+    .ql-editor p {
+      @apply text-[#888ea8];
+    }
+    
+    .ql-snow .ql-picker:not(.ql-color-picker):not(.ql-icon-picker) svg {
+      @apply rtl:right-auto rtl:left-0;
+    }
+    
+    
+    .ql-toolbar .ql-formats {
+      @apply rtl:mr-0 rtl:ml-4;
+    }
+    

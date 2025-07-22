@@ -1,0 +1,82 @@
+.app-form {
+    input,
+    textarea,
+    .ant-select,
+    .ant-input-password,
+    .ant-picker,
+    .ant-otp-input,
+    .ant-input,
+    .ant-input-outlined{
+        @apply h-[52px] border-[2px] border-primary/10 rounded-xl text-text placeholder:text-text bg-body dark:bg-dark focus:border-primary/10 hover:border-primary/10 ;
+        input[data-autocompleted] {
+            background-color: transparent !important;
+        }
+    }
+    
+    .ant-input-password .ant-input{
+        @apply h-[42px] ;
+    }
+
+    textarea{
+        @apply h-[120px] #{!important};
+    }
+
+    .ant-input,
+    .ant-picker,
+    .ant-input-number,
+    .ant-input-number-affix-wrapper{
+        @apply w-full;
+    }
+
+    label{
+        @apply max-md:text-sm w-full text-text font-semibold #{!important};
+    }
+
+    .ant-select-multiple{
+        .ant-select-selection-wrap{
+            align-self: center;
+        }
+    } 
+
+    .full-modal-btn *{
+        @apply w-full;
+    }
+    .ant-otp{
+        @apply gap-4 ;
+        .ant-otp-input{
+            @apply size-[59px] #{!important};
+        }
+    }
+    
+    .ant-input-number-input{
+        @apply h-full;
+    }
+
+    .ant-radio-group{
+        @apply w-full gap-2 flex items-center;
+        .ant-radio-button-wrapper{
+            @apply flex-1 flex items-center justify-center border hover:text-primary min-h-11 rounded-xl border-border before:hidden ;
+            &.ant-radio-button-wrapper-checked{
+                @apply border-primary text-primary #{!important};
+            }
+        }
+    }
+    .name-inputs-wrapper{
+        @apply relative;
+        .btns-wrapper{
+            @apply z-10 flex items-center gap-2 bg-body p-1.5 rounded-t-xl absolute -top-1 end-0;
+            span{
+                @apply px-4 py-1 text-xs font-bold rounded-xl cursor-pointer min-w-10;
+            }
+        }
+    }
+    .ant-upload-list{
+        @apply justify-center;
+    }
+    .ant-upload{
+        @apply bg-body text-text border-border rounded-sm #{!important};
+    }
+    .ant-input-password-icon{
+        @apply text-text #{!important};
+    }
+}

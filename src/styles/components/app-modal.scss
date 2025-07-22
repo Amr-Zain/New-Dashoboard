@@ -1,0 +1,41 @@
+
+.createApp-Modal{
+    .ant-modal-content{
+        @apply lg:max-w-[550px] mx-auto bg-body text-text shadow-sm border border-solid border-border;
+        .ant-modal-title{
+            @apply bg-body text-sm md:text-[20px]  text-text #{!important};
+        }
+        .ant-modal-close{
+            @apply bg-body text-text hover:scale-110 transition-transform duration-300;
+        }
+        .ant-modal-header{
+            @apply mb-6;
+        }
+    }
+}
+
+.register-video-wrap{
+    .createApp-Modal{
+        @apply lg:w-[1200px] #{!important};
+        .ant-modal-content{
+            @apply max-w-full  p-[50px] bg-transparent #{!important};
+        }
+    }
+}
+
+
+.custom-Modal{
+    .ant-modal-content{
+        @apply lg:max-w-full ;
+    }
+}
+
+
+.file-modal{
+    .createApp-Modal{
+        .ant-modal-content{
+            @apply lg:max-w-[80%] mx-auto h-[80%] ;
+            
+        }
+    }
+}

@@ -1,0 +1,8 @@
+{
+  "plugins": ["react"],
+  "rules": {
+    "react/jsx-no-constructed-context-values": "warn",
+    "react/jsx-no-undef": "error",
+    "react/jsx-key": "warn"
+  }
+}

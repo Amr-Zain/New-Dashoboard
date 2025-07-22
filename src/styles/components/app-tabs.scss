@@ -1,0 +1,18 @@
+
+.ant-tabs-nav{
+    .ant-tabs-nav::before{
+        @apply border-border #{!important}
+    }
+    .ant-tabs-nav-list{
+        @apply flex gap-4;
+        .ant-tabs-tab{
+            @apply mx-0 #{!important};
+            .ant-tabs-tab-btn{
+                @apply text-text font-semibold text-center px-2 rounded-sm
+            }
+            &.ant-tabs-tab-active{
+                @apply bg-gradient-to-t from-primary/20 to-body
+            }
+        }
+    }
+}

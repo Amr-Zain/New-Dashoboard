@@ -1,0 +1,20 @@
+.app-drawer{
+    .ant-drawer-content{
+        @apply bg-body border-e border-e-border shadow-sm text-text;
+        .ant-drawer-header{
+            @apply border-b-border shadow-sm;
+            .ant-drawer-title{
+                @apply text-2xl;
+            }
+        }
+    }
+    .ant-drawer-content-wrapper{
+        @apply md:w-[476px] #{!important};
+    }
+    .ant-drawer-header-title{
+        @apply flex-row-reverse gap-3;
+    }
+    .ant-drawer-close{
+        @apply size-10 rounded-xl bg-dark m-0 text-text;
+    }
+}

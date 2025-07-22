@@ -1,0 +1,181 @@
+@use "@/styles/components/btn" as Btn;
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-family: "Poppins", sans-serif;
+  @apply scroll-smooth;
+}
+
+:root {
+  /* Light theme (default) - Purple harmony */
+  --TW-primary-color: 0 102 255;
+  --TW-light-primary-color: 72 127 255;
+  --TW-body-color: 255, 255, 255;
+  --TW-dark-color: 246, 247, 248;
+  --TW-text-color: 15, 11, 25; 
+  --TW-text-sec-color: 45, 35, 75; 
+  --TW-border-color: 58, 69, 81,.2; 
+  --TW-placeholder-color: 125, 108, 145; 
+
+  --TW-shadow-sm: 0 0 6px 0 rgba(var(--TW-primary-color), 0.15);
+  --TW-box-shadow: rgba(20, 127, 205, 0.1) 1px 1px 20px 0px inset;
+}
+
+.dark {
+  // --TW-primary-color: 168, 85, 247;
+  --TW-body-color: 36, 43, 51 ;
+  --TW-dark-color:29, 35, 41;
+  --TW-text-color: 195, 190, 208;
+  --TW-text-sec-color: 170, 184, 197;
+  --TW-border-color: 58, 69, 81,1;
+  --TW-placeholder-color: 155, 135, 180;
+}
+
+html[dir="rtl"] {
+  font-family: "Noto Sans Arabic", sans-serif;
+}
+
+body {
+  @apply  text-text;
+}
+
+/* width */
+::-webkit-scrollbar {
+  @apply w-[5px];
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply bg-primary-light ;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply bg-primary rounded-lg;
+}
+
+
+
+/* Navbar */
+.navbar-sticky header,
+.navbar-floating header {
+  @apply sticky top-0 z-20;
+}
+.navbar-floating header {
+  @apply bg-dark rounded-[50px] px-6 pt-4;
+}
+
+
+.navbar-floating header .floating-height-c {
+  @apply min-h-[45px];
+}
+
+.navbar-floating header > div .horizontal-menu {
+  @apply rounded-b-md shadow;
+}
+
+.header-action {
+  @apply rounded-full bg-dark text-text size-10 flex items-center justify-center cursor-pointer hover:bg-body border-[2px] border-border border-double hover:text-primary transition-all duration-300;
+}
+.main-content {
+  @apply flex-1 bg-body dark:bg-dark overflow-hidden;
+  .collapse-icon {
+    @apply size-8  flex items-center justify-center rounded-full hover:bg-primary-light
+      transition-transform duration-300 rtl:rotate-180;
+  }
+}
+/* Sidebar */
+.sidebar {
+  @apply h-screen w-[270px] z-50 transition-[width] duration-300;
+
+  .side-list {
+    @apply relative font-medium space-y-1.5 px-4 py-0;
+    .nav-item-text {
+      @apply flex items-center text-sm gap-2 whitespace-nowrap;
+    }
+  }
+  .nav-item > :first-child {
+    @apply mb-1 flex items-center font-semibold justify-between overflow-hidden whitespace-nowrap rounded-md p-2 text-text hover:bg-primary/10 hover:text-primary transition-colors duration-300 w-full #{!important};
+    svg {
+      @apply size-5;
+    }
+  }
+  .active-link {
+    @apply bg-primary/10 *:text-primary #{!important};
+  }
+
+  .ant-collapse {
+    @apply bg-transparent;
+    .ant-collapse-item {
+      @apply w-full;
+      .ant-collapse-header {
+        @apply p-2.5 text-text rounded-md hover:bg-primary-light hover:text-primary transition-colors duration-300;
+      }
+    }
+  }
+  .ant-collapse-item-active{
+    .ant-collapse-header{
+          @apply bg-primary-light *:text-primary #{!important};
+          .ant-collapse-arrow{
+            @apply rotate-0 #{!important};
+          }
+    }
+    .active-link{
+      @apply bg-transparent text-primary  #{!important}; 
+    }
+  }
+  .list-head {
+    @apply text-lg text-primary font-semibold py-3 whitespace-nowrap overflow-hidden;
+  }
+  &.closed-side {
+    @apply w-[90px];
+    .side-list {
+      @apply px-4 space-y-0;
+      .nav-item-text {
+        @apply justify-center;
+      }
+      .nav-item-text span,
+      .list-head,
+      .ant-collapse-expand-icon {
+        @apply hidden opacity-0 transition-none duration-0;
+      }
+      .nav-item > :first-child {
+        @apply justify-center #{!important};
+      }
+      .ant-collapse {
+        @apply mb-2;
+        .ant-collapse-header{
+          @apply min-h-[55px]
+        }
+      }
+    }
+  }
+}
+
+.main-card{
+    @apply bg-primary/5 dark:bg-body p-6 rounded-[24px] border-[4px] border-double border-primary/5 dark:border-border border-e-0 bg-clip-border shadow-sm;
+}
+
+
+.page-title{
+  @apply flex items-center gap-2 text-text text-sm lg:text-base font-semibold;
+  svg{
+    @apply size-5;
+  }
+}
+
+
+
+.swal2-popup{
+  @apply bg-dark text-text #{!important};
+}
+
+.theme-btn{
+  @apply app-btn min-h-32 flex-col shadow-none #{!important} ;
+}
+

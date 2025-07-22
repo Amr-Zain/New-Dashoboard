@@ -1,0 +1,20 @@
+.ant-dropdown{
+  @apply border border-primary-light rounded-md ;
+  .ant-dropdown-menu{
+    @apply bg-body border-border shadow-sm p-0;
+    .ant-dropdown-menu-item{
+      @apply bg-dark text-text border-b border-b-primary-light rounded-none last:border-b-0 #{!important} ;
+    }
+  }
+}
+
+
+.notifications-dropdown{
+  @apply border-none bg-body rounded-3xl;
+  .ant-dropdown-menu{
+    @apply border-primary/20 shadow-sm border-double border  lg:min-w-[500px];
+  }
+  .ant-dropdown-menu-item{
+    @apply p-0 #{!important} ;
+  }
+}
