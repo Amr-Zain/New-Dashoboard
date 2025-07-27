@@ -5,9 +5,10 @@ import { Form, FormProps } from "antd";
 import AppEditor from "./AppEditor";
 import Input from "antd/es/input/Input";
 import { useTranslation } from "react-i18next";
+import { FormInstance } from "antd/lib";
 
-interface MultiLangFieldProps {
-  form: FormProps;
+export interface MultiLangFieldProps {
+  form: FormInstance;
   name: string;
   type?: "input" | "editor";
   label?: string;

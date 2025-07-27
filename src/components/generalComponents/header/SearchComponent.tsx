@@ -6,7 +6,7 @@ import { CloseOutlined } from "@ant-design/icons";
 import toast from "react-hot-toast";
 import AppLink from "@/components/UiComponents/buttons/AppLink";
 import { useTranslation } from "react-i18next";
-import EmptySearch from "./EmptySearch";
+// import EmptySearch from "./EmptySearch";
 import { SearchNormal1 } from "iconsax-reactjs";
 // import Lottie from "lottie-react";
 // import RecordingAnimation from "@/assets/ui-Icons/recording.json"
@@ -136,7 +136,7 @@ const SearchComponent = () => {
                 <AppLink
                   key={`product_card_${item?.id}`}
                   onClick={handleClose}
-                  href={`/products/${item?.slug}`}
+                  to={`/products/${item?.slug}`}
                   className={"text-text"}
                 >
                   {item}
@@ -152,7 +152,7 @@ const SearchComponent = () => {
           key: "empty_products",
           label: (
             <div className="flex items-center justify-center">
-              <EmptySearch text={searchTerm} />
+              {/* <EmptySearch text={searchTerm} /> */}
             </div>
           ),
         },

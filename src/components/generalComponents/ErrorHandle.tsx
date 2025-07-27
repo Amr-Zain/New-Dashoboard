@@ -49,15 +49,30 @@ export default function AppError({
 
     return description;
   };
+  
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
 
+  useEffect(() => {
+    const updateOnlineStatus = () => setIsOnline(navigator.onLine);
+
+    window.addEventListener("online", updateOnlineStatus);
+    window.addEventListener("offline", updateOnlineStatus);
+
+    return () => {
+      window.removeEventListener("online", updateOnlineStatus);
+      window.removeEventListener("offline", updateOnlineStatus);
+    };
+  }, []);
   const errorDetails = getErrorDetails();
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
       <div className="max-w-md mx-auto">
-        <h1 className="text-3xl font-bold text-danger mb-2">{title}</h1>
+        <h1 className="text-3xl font-bold text-danger mb-2">
+          {isOnline ? title : "Connection Lost"}
+        </h1>
         <p className="text-lg text-bodyText text-secondary mb-6">
-          {errorDetails}
+          {isOnline ? errorDetails : "Please Check your internet connection"}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -96,3 +111,4 @@ export default function AppError({
     </div>
   );
 }
+import { useState, useEffect } from "react";

@@ -3,22 +3,15 @@ import ArticaleForm from "@/components/pagesComponents/articles";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import axiosInstance from "@/services/instance";
 import { RouterContext } from "@/main";
+import useFetch from "@/hooks/UseFetch";
+import { prefetchWithUseFetchConfig } from "@/utils/preFetcher";
 
 export const Route = createFileRoute("/_main/articles/$articalId/edit")({
   component: RouteComponent,
   loader: async ({ params, context }) => {
     const { queryClient } = context as RouterContext;
     const endpoint = `articals/${params.articalId}`;
-    await queryClient.prefetchQuery({
-      queryKey: [endpoint],
-      queryFn: async () => {
-        const res = await axiosInstance.get(endpoint);
-        if (res.data?.error) {
-          throw new Error(res.data.message);
-        }
-        return res.data;
-      },
-    });
+    await prefetchWithUseFetchConfig(queryClient, [endpoint], endpoint);
     return {
       articalId: params.articalId,
     };
@@ -26,17 +19,12 @@ export const Route = createFileRoute("/_main/articles/$articalId/edit")({
 });
 
 function RouteComponent() {
-  const { articalId } = Route.useLoaderData();
+  const { articalId } = Route.useParams();
   const endpoint = `articals/${articalId}`;
-  const { data } = useSuspenseQuery({
+  const { data } = useFetch({
     queryKey: [endpoint],
-    queryFn: async () => {
-      const res = await axiosInstance.get(endpoint);
-      if (res.data?.error) {
-        throw new Error(res.data.message);
-      }
-      return res.data;
-    },
+    endpoint,
+    suspense: true,
   });
   return <ArticaleForm fetchData={data} />;
 }

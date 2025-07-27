@@ -1,45 +1,12 @@
 import axiosInstance from "@/services/axiosGeneral";
 import toast from "react-hot-toast";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import UploadedPreview from "./UploadedPreview";
 import AppModal from "../Modal/AppModal";
 import { Image } from "antd";
 import { useTranslation } from "react-i18next";
-
+import { AppLoaderProps, UploadFile } from "@/types/ApploaderTypes";
 type FileType = File;
-
-export interface UploadFile {
-  uid: string;
-  name: string;
-  isUploading: boolean;
-  url?: string;
-  preview?: string;
-  originFileObj?: FileType;
-  type?: string;
-  size?: number;
-  response?: any;
-}
-
-interface ImageWallProps {
-  initialFileList?: UploadFile[];
-  onChange?: (fileList: UploadFile[] | any) => void;
-  onRemove?: (fileList: UploadFile[]) => void;
-  maxCount?: number;
-  disabled?: boolean;
-  hideTitle?: boolean;
-  singleFile?: boolean;
-  form: any;
-  shapeType?: "picture-card" | "list";
-  type_file?: "image" | "document" | "media";
-  name: string;
-  model: string;
-  accept?: string;
-  baseUrl?: string;
-  maxSize?: number;
-  showPreview?: boolean;
-  draggable?: boolean;
-  apiEndpoint?: string;
-}
 
 const getBase64 = (file: FileType): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -49,7 +16,7 @@ const getBase64 = (file: FileType): Promise<string> =>
     reader.onerror = (error) => reject(error);
   });
 
-const AppUploader: React.FC<ImageWallProps> = ({
+const AppUploader = <T extends object = Record<string, any>>({
   initialFileList = [],
   onChange,
   onRemove,
@@ -68,7 +35,7 @@ const AppUploader: React.FC<ImageWallProps> = ({
   showPreview = true,
   draggable = true,
   apiEndpoint = "/attachments",
-}) => {
+}: AppLoaderProps<T>) => {
   const [fileList, setFileList] = useState<UploadFile[]>(initialFileList);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewContent, setPreviewContent] = useState<string>("");
@@ -77,17 +44,20 @@ const AppUploader: React.FC<ImageWallProps> = ({
   >("");
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
+    // Only update if initialFileList is different from current fileList to prevent infinite loops
     if (
       initialFileList &&
       initialFileList.length > 0 &&
-      fileList.length === 0
+      JSON.stringify(initialFileList) !== JSON.stringify(fileList)
     ) {
       setFileList(initialFileList);
     }
   }, [initialFileList]);
+
   const fileListRef = useRef(fileList);
-  fileListRef.current = fileList; 
+  fileListRef.current = fileList;
 
   useEffect(() => {
     return () => {
@@ -98,7 +68,7 @@ const AppUploader: React.FC<ImageWallProps> = ({
       });
     };
   }, []);
- 
+
   const validateFile = (file: FileType): string | null => {
     if (type_file === "document") {
       const allowedTypes = ["application/pdf"];
@@ -107,12 +77,12 @@ const AppUploader: React.FC<ImageWallProps> = ({
       }
     }
 
-    if (maxSize && file.size > maxSize * 1024 * 1024) {
+    if (maxSize && file.size && file.size > maxSize * 1024 * 1024) {
       return `File size must be less than ${maxSize}MB`;
     }
     return null;
   };
-  console.log(initialFileList)
+
   const handlePreview = async (file: UploadFile) => {
     if (!showPreview) return;
 
@@ -128,7 +98,6 @@ const AppUploader: React.FC<ImageWallProps> = ({
       setPreviewContent(file.url || (file.preview as string));
     } else {
       setPreviewType("image");
-      console.log("set", file.url);
       if (!file.url && !file.preview) {
         file.preview = await getBase64(file.originFileObj as FileType);
       }
@@ -137,7 +106,9 @@ const AppUploader: React.FC<ImageWallProps> = ({
     setPreviewOpen(true);
   };
 
-  const uploadToServer = async (file: FileType): Promise<any> => {
+  const uploadToServer = async (
+    file: FileType
+  ): Promise<{ data: { id: string; url: string; [key: string]: any } }> => {
     let attachmentType = "";
     if (file.type.startsWith("image/")) {
       attachmentType = "image";
@@ -167,7 +138,7 @@ const AppUploader: React.FC<ImageWallProps> = ({
       const newFiles: UploadFile[] = [];
 
       for (let file of files) {
-        if (fileList.some((f: any) => f.name === file.name)) {
+        if (fileList.some((f) => f.name === file.name)) {
           continue;
         }
 
@@ -203,7 +174,7 @@ const AppUploader: React.FC<ImageWallProps> = ({
         try {
           const response = await uploadToServer(file.originFileObj!);
 
-          const updatedFile = {
+          const updatedFile: UploadFile = {
             ...file,
             isUploading: false,
             response: response,
@@ -214,9 +185,9 @@ const AppUploader: React.FC<ImageWallProps> = ({
           );
 
           if (onChange) {
-            onChange(response?.data);
+            onChange(response.data); // Pass the response data directly
           } else {
-            form.setFieldValue(name, response?.data);
+            form.setFieldValue(name, response.data); // Pass the response data directly
           }
         } catch (error: any) {
           console.error("Upload error:", error);
@@ -235,8 +206,11 @@ const AppUploader: React.FC<ImageWallProps> = ({
 
   const handleRemove = async (file: UploadFile) => {
     try {
-      if (file.uid&& !file?.url?.startsWith("blob:")) {
-        await axiosInstance.delete(`${apiEndpoint}/${file.uid}`);
+      if (file.uid && !file?.url?.startsWith("blob:")) {
+        // Assuming file.response.data.id is the ID for existing files
+        await axiosInstance.delete(
+          `${apiEndpoint}/${file.response?.data?.id || file.uid}`
+        );
       }
       const updatedFiles = fileList.filter((item) => item.uid !== file.uid);
       setFileList(updatedFiles);
@@ -266,8 +240,8 @@ const AppUploader: React.FC<ImageWallProps> = ({
             {type_file === "image"
               ? "Image Upload"
               : type_file === "document"
-              ? "Document Upload"
-              : "Media Upload"}
+                ? "Document Upload"
+                : "Media Upload"}
           </h3>
           <span className="text-sm text-secondary">
             {fileList.length}

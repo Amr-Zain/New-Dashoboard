@@ -1,8 +1,8 @@
 import { Loader2, Plus } from "lucide-react";
 import { useDropzone } from "react-dropzone";
-import { UploadFile } from "./AppUploader";
 import CardPreview from "../previews/CardPreview";
 import { getAcceptTypes } from "@/utils/helpers";
+import { UploadFile } from "@/types/ApploaderTypes";
 
 export default function UploadedPreview({
   fileList,

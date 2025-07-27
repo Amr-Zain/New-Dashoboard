@@ -10,7 +10,10 @@ import { Skeleton } from "../ui/skeleton";
 import useWindowWidth from "@/utils/hooks/useWindowWidth";
 import React, { useRef, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
-
+interface Position {
+  lat: number;
+  lng: number;
+}
 
 interface GoogleMapProps {
   onMarkerPositionChange?: (position: Position) => void;

@@ -4,6 +4,7 @@ import { Form } from "antd";
 import { generateFinalOut, generateInitialValues } from "@/utils/helpers";
 import toast from "react-hot-toast";
 import { useMutate } from "@/hooks/UseMutate";
+import { FieldProp } from "@/types/AppFormTypes";
 
 export default function ChangePasswordFrom() {
   const endpoint = ``;
@@ -15,7 +16,7 @@ export default function ChangePasswordFrom() {
     endpoint: `${endpoint}`,
     onSuccess: (data: any) => {
       toast.success(
-        t(`isEditSuccessfully`, { 
+        t(`isEditSuccessfully`, {
           name: t("pages.articles"),
         })
       );
@@ -26,7 +27,7 @@ export default function ChangePasswordFrom() {
     formData: true,
   });
 
-  const fields = [
+  const fields: FieldProp[] = [
     {
       type: "password",
       name: "password",
@@ -40,9 +41,11 @@ export default function ChangePasswordFrom() {
       name: "confirmedPassword",
       label: t("form.confirmPasswordLabel"),
       placeholder: t("form.confirmPasswordPlaceholder"),
-      rules: [{ required: true, message: t("validation.confirmPasswordRequired") }],
+      rules: [
+        { required: true, message: t("validation.confirmPasswordRequired") },
+      ],
       span: 12,
-    }
+    },
   ];
 
   const handleSubmit = async (values: any) => {
@@ -53,9 +56,9 @@ export default function ChangePasswordFrom() {
   return (
     <AppForm
       form={form}
-/*       initialValues={generateInitialValues(fetchData?.data)}
-*/       fields={fields}
-      loader={isLoading} 
+      /*       initialValues={generateInitialValues(fetchData?.data)}
+       */ fields={fields}
+      loader={isLoading}
       onFinish={handleSubmit}
       cancelBtn
     />

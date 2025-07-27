@@ -5,23 +5,21 @@ import { Form } from "antd";
 import { generateFinalOut, generateInitialValues } from "@/utils/helpers";
 import toast from "react-hot-toast";
 import { useMutate } from "@/hooks/UseMutate";
+import { FieldProp } from "@/types/AppFormTypes";
 
 export default function ProfileForm() {
   const endpoint = ``;
   const { t } = useTranslation();
   const [form] = Form.useForm();
 
-  const {
-    data: fetchData,
-    isLoading: fetchLoading,
-  } = useFetch<any>({
-    endpoint: `${endpoint}`, 
-    queryKey: [`${endpoint}`], 
+  const { data: fetchData, isLoading: fetchLoading } = useFetch<any>({
+    endpoint: `${endpoint}`,
+    queryKey: [`${endpoint}`],
   });
 
   const { mutate, isLoading } = useMutate({
-    mutationKey: [`${endpoint}`], 
-    endpoint: `${endpoint}`, 
+    mutationKey: [`${endpoint}`],
+    endpoint: `${endpoint}`,
     onSuccess: (data: any) => {
       toast.success(
         t(`isEditSuccessfully`, {
@@ -35,17 +33,29 @@ export default function ProfileForm() {
     formData: true,
   });
 
-  const fields = [
+  const fields: FieldProp[] = [
     {
       type: "imgUploader",
-      uploadText: t("form.uploadImageText"),
+      // uploadText: t("form.uploadImageText"),
       name: "image",
       inputProps: {
         model: "sliders",
-        initialFileList: fetchData ? [{ url: fetchData?.data?.image }] : [],
+        form:form,
+        name:'image',
+        initialFileList: fetchData
+          ? [
+              {
+                url: fetchData?.data?.image,
+                isUploading: false,
+                name: "image",
+                uid: "dfdsfsds",
+              },
+            ]
+          : [],
+          singleFile:true,
       },
       rules: [{ required: true, message: t("validation.required") }],
-      maxCount: 3,
+      maxCount: 1,
     },
     {
       type: "text",
@@ -60,7 +70,7 @@ export default function ProfileForm() {
       name: "email",
       label: t("form.email"),
       placeholder: t("form.emailPlaceholder"),
-      rules: [{ required: true, message: t("validation.emailRequired") }],
+      rules: [{ required: true,type:'email', message: t("validation.emailRequired") }],
       span: 24,
     },
     {
@@ -81,8 +91,8 @@ export default function ProfileForm() {
   return (
     <AppForm
       form={form}
-/* initialValues={generateInitialValues(fetchData?.data)}
-*/       fields={fields}
+      /* initialValues={generateInitialValues(fetchData?.data)}
+       */ fields={fields}
       loader={isLoading} // Loader prop simplified as id is no longer used for conditional loading
       onFinish={handleSubmit}
       cancelBtn

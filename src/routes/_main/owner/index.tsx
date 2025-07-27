@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Home, Profile2User } from "iconsax-reactjs";
-import AppForm, { FieldProp } from "@/components/UiComponents/forms/AppForm";
+import AppForm from "@/components/UiComponents/forms/AppForm";
 import toast from "react-hot-toast";
 import { useMutate } from "@/hooks/UseMutate";
 import { useForm } from "antd/es/form/Form";
@@ -10,26 +10,17 @@ import MainPageWrapper from "@/components/generalComponents/layout/MainPageWrapp
 import { generateFinalOut, generateInitialValues } from "@/utils/helpers";
 import axiosInstance from "@/services/instance";
 import { RouterContext } from "@/main";
-import LoaderPage from "@/components/generalComponents/layout/Loader";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { FieldProp } from "@/types/AppFormTypes";
+import { prefetchWithUseFetchConfig } from "@/utils/preFetcher";
+import useFetch from "@/hooks/UseFetch";
 
 export const Route = createFileRoute("/_main/owner/")({
   component: Owner,
-  pendingComponent: LoaderPage,
-  errorComponent: () => <></>,
-  loader: async ({ params, context }) => {
+  loader: async ({ context }) => {
     const { queryClient } = context as RouterContext;
     const endpoint = `owner`;
-    await queryClient.prefetchQuery({
-      queryKey: [endpoint],
-      queryFn: async () => {
-        const res = await axiosInstance.get(endpoint);
-        if (res.data?.error) {
-          throw new Error(res.data.message);
-        }
-        return res.data;
-      },
-    });
+    await prefetchWithUseFetchConfig(queryClient, [endpoint], endpoint);
   },
 });
 
@@ -42,29 +33,26 @@ function Owner() {
     { label: t("pages.home"), to: "/", icon: <Home /> },
     { label: t("pages.owner"), icon: <Profile2User /> },
   ];
-
-  const { data, isLoading: fetchLoading, refetch } = useSuspenseQuery({
+  const {
+    data,
+    isLoading: fetchLoading,
+    refetch,
+  } = useFetch({
     queryKey: [endpoint],
-    queryFn: async () => {
-      const res = await axiosInstance.get(endpoint);
-      if (res.data?.error) {
-        throw new Error(res.data.message);
-      }
-      return res.data;
-    },
+    endpoint,
+    suspense: true,
   });
-
   const fields: FieldProp[] = [
     {
       type: "imgUploader",
-      uploadText: t("form.uploadImageText"),
+      // uploadText: t("form.uploadImageText"),
       name: "image",
       inputProps: {
         model: "owner",
         initialFileList: data ? [{ url: data?.data?.image }] : [],
+        maxCount: 1,
       },
       rules: [{ required: true, message: t("validation.required") }],
-      maxCount: 1,
       skeletonClassName: "!size-[150px]",
     },
     {
@@ -107,7 +95,7 @@ function Owner() {
     mutationKey: [endpoint],
     endpoint: endpoint,
     onSuccess: (data: any) => {
-      toast.success(t(`isEditSuccessfully`, { name: t("pages.owner") }));
+      toast.success(t(`isEditSuccessfully`, { name: t(`pages.owner`) }));
       refetch();
     },
     onError: (err: any) => {
@@ -127,7 +115,7 @@ function Owner() {
         form={form}
         fields={fields}
         onFinish={handleSubmit}
-        loader={fetchLoading}
+        loader={isLoading}
         initialValues={generateInitialValues(data.data)}
         fromBtn={t("buttons.save")}
       />

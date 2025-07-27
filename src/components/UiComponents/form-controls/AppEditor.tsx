@@ -2,7 +2,7 @@ import { FormInstance } from "antd";
 import { useEffect, useState } from "react";
 import Editor from "react-simple-wysiwyg";
 
-type EditorProps = {
+export type EditorProps = {
   placeholder?: string;
   form:FormInstance;
   name?:string;

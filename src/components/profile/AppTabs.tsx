@@ -13,6 +13,7 @@ export default function AppTabs({
 
   const onTabChange = (key: string) => {
     navigate({
+      to:'.',
       search: (prev) => ({...prev,  tab:key }),
     });
   };
