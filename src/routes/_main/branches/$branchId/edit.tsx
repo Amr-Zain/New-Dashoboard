@@ -3,6 +3,7 @@ import ArticaleForm from "@/components/pagesComponents/articles";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import axiosInstance from "@/services/instance";
 import { RouterContext } from "@/main";
+import BranchForm from "@/components/pagesComponents/branches";
 
 export const Route = createFileRoute("/_main/branches/$branchId/edit")({
   component: RouteComponent,
@@ -38,5 +39,5 @@ function RouteComponent() {
       return res.data;
     },
   });
-  return <ArticaleForm fetchData={data} />;
+  return <BranchForm fetchData={data} />;
 }

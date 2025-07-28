@@ -18,7 +18,7 @@ export default function BranchForm({ fetchData }: { fetchData?: any }) {
 
   const breadcrumbItems: breadcrumbItem[] = [
     { label: t("pages.home"), to: "/", icon: <Home /> },
-    { label: t("pages.awards"), to: "/awards", icon: <Slider /> }, 
+    { label: t("pages.awards"), to: "/branches", icon: <Slider /> }, 
     { label: fetchData ? t("actions.edit") : t("actions.add") }, 
   ];
 
@@ -33,7 +33,7 @@ export default function BranchForm({ fetchData }: { fetchData?: any }) {
           name: t("pages.articles"),
         })
       );
-      navigate({ to: "/branches" });
+      navigate({ to: "/branches", search:{page:'1'} });
     },
     onError: (err: any) => {
       toast.error(err?.response?.data?.message);

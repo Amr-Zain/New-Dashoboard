@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import AppTable from "@/components/UiComponents/table/AppTable";
 import { Edit, Home, Slider, Trash } from "iconsax-reactjs";
@@ -83,13 +83,12 @@ function Articles() {
       render: (_: any, record: any) => {
         return (
           <div className="flex items-center gap-2 justify-center">
-            <button
-              onClick={() => router({ to: `/articles/${record?.id}/edit` })}
+            <Link to="/articles/$articalId/edit" params={{ articalId: record.id }} preload='intent'
             >
               {" "}
               {/* Changed navigation call */}
               <Edit className="size-9 text-green-600 p-2 bg-green-100/80 rounded-full" />
-            </button>
+            </Link>
             <TableDeleteBtn
               item={record}
               endpoint={endpoint}
