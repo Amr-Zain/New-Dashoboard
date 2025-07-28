@@ -23,6 +23,7 @@ import "@/styles/components/app-form.scss";
 import MultiLangField from "../form-controls/MultiLangField";
 import { cn } from "@/utils/helpers";
 import AppSkeleton from "../Loader/AppSkeleton";
+import TiptapEditorWithToolbar from "../form-controls/TiptapEditor";
 
 export interface FieldProp {
   type:
@@ -248,10 +249,10 @@ const AppForm = ({
         break;
       case "editor":
         inputElement = (
-          <AppEditor
+          <TiptapEditorWithToolbar
             form={form}
             placeholder={field.placeholder}
-            name={field.name}
+            name={field.name!}
             {...field.inputProps}
           />
         );
