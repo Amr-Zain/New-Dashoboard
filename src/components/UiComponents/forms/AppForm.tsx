@@ -23,12 +23,9 @@ import "@/styles/components/app-form.scss";
 import MultiLangField from "../form-controls/MultiLangField";
 import { cn } from "@/utils/helpers";
 import AppSkeleton from "../Loader/AppSkeleton";
-<<<<<<< HEAD
 import TiptapEditorWithToolbar from "../form-controls/TiptapEditor";
 import AppSelect from "../form-controls/AppSelect";
-=======
 import { AppFormProps, FieldProp } from "@/types/AppFormTypes";
->>>>>>> main
 
 const AppForm = <T extends object = Record<string, any>>({
   fields,
@@ -133,17 +130,7 @@ const AppForm = <T extends object = Record<string, any>>({
             endpoint={field.inputProps?.endpoint}
             inputProps={field.inputProps}
             {...field.inputProps}
-<<<<<<< HEAD
           />
-=======
-          >
-            {field.options?.map((option) => (
-              <Select.Option key={String(option.value)} value={option.value}>
-                {option.label}
-              </Select.Option>
-            ))}
-          </Select>
->>>>>>> main
         );
         break;
       case "radio":
@@ -218,12 +205,8 @@ const AppForm = <T extends object = Record<string, any>>({
         inputElement = (
           <TiptapEditorWithToolbar
             form={form}
-<<<<<<< HEAD
             placeholder={field.placeholder}
             name={field.name!}
-=======
-            name={field.name}
->>>>>>> main
             {...field.inputProps}
           />
         );

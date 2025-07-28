@@ -10,18 +10,11 @@ import { CheckboxProps } from 'antd/lib/checkbox';
 import { RateProps } from 'antd/lib/rate';
 import { RadioGroupProps } from 'antd/lib/radio';
 import type { OTPProps } from 'antd/lib/input/OTP';
-<<<<<<< HEAD
  import { PhoneNumberProps } from "@/components/UiComponents/form-controls/PhoneNumber";
 // import { EditorProps } from "@/components/UiComponents/form-controls/AppEditor";
 import { MultiLangFieldProps } from "@/components/UiComponents/form-controls/MultiLangField";
 import { AppLoaderProps } from "./ApploaderTypes";
 import { EditorProps } from "@/components/UiComponents/form-controls/TiptapEditor";
-=======
-import { AppLoaderProps } from "./ApploaderTypes";
-import { PhoneNumberProps } from "@/components/UiComponents/form-controls/PhoneNumber";
-import { EditorProps } from "@/components/UiComponents/form-controls/AppEditor";
-import { MultiLangFieldProps } from "@/components/UiComponents/form-controls/MultiLangField";
->>>>>>> main
 
 interface CommenProps {
   name:string;

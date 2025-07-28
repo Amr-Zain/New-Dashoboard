@@ -1,12 +1,9 @@
-<<<<<<< HEAD
-import { createFileRoute, Link } from "@tanstack/react-router";
-=======
 import {
   createFileRoute,
+  Link,
   redirect,
   Route as RouteType,
 } from "@tanstack/react-router";
->>>>>>> main
 import { useTranslation } from "react-i18next";
 import AppTable from "@/components/UiComponents/table/AppTable";
 import { Edit, Home, Slider, Trash } from "iconsax-reactjs";
@@ -84,16 +81,8 @@ function Articles() {
               {" "}
               {/* Changed navigation call */}
               <Edit className="size-9 text-green-600 p-2 bg-green-100/80 rounded-full" />
-<<<<<<< HEAD
             </Link>
-            <TableDeleteBtn
-              item={record}
-              endpoint={endpoint}
-            />
-=======
-            </button>
             <TableDeleteBtn item={record} endpoint={endpoint} />
->>>>>>> main
           </div>
         );
       },

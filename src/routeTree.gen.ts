@@ -20,13 +20,9 @@ import { Route as MainOwnerIndexRouteImport } from './routes/_main/owner/index'
 import { Route as MainNotificationsIndexRouteImport } from './routes/_main/notifications/index'
 import { Route as MainBranchesIndexRouteImport } from './routes/_main/branches/index'
 import { Route as MainArticlesIndexRouteImport } from './routes/_main/articles/index'
-<<<<<<< HEAD
 import { Route as MainBranchesAddIndexRouteImport } from './routes/_main/branches/add.index'
-import { Route as MainArticlesAddIndexRouteImport } from './routes/_main/articles/add.index'
-import { Route as MainBranchesBranchIdEditRouteImport } from './routes/_main/branches/$branchId/edit'
-=======
 import { Route as MainArticlesAddIndexRouteImport } from './routes/_main/articles/add/index'
->>>>>>> main
+import { Route as MainBranchesBranchIdEditRouteImport } from './routes/_main/branches/$branchId/edit'
 import { Route as MainArticlesArticalIdEditRouteImport } from './routes/_main/articles/$articalId/edit'
 
 const MainAboutLazyRouteImport = createFileRoute('/_main/about')()

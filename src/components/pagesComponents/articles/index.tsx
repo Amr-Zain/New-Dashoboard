@@ -34,11 +34,7 @@ export default function ArticaleForm({ fetchData }: { fetchData?: any }) {
           name: t("pages.articles"),
         })
       );
-<<<<<<< HEAD
-      navigate({ to: "/articles" , search:{page:'1'}});
-=======
       navigate({ to: "/articles", search: { page: "1" } });
->>>>>>> main
     },
     onError: (err: any) => {
       toast.error(err?.response?.data?.message);
