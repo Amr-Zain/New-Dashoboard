@@ -23,64 +23,19 @@ import "@/styles/components/app-form.scss";
 import MultiLangField from "../form-controls/MultiLangField";
 import { cn } from "@/utils/helpers";
 import AppSkeleton from "../Loader/AppSkeleton";
+<<<<<<< HEAD
 import TiptapEditorWithToolbar from "../form-controls/TiptapEditor";
 import AppSelect from "../form-controls/AppSelect";
+=======
+import { AppFormProps, FieldProp } from "@/types/AppFormTypes";
+>>>>>>> main
 
-export interface FieldProp {
-  type:
-    | "text"
-    | "textarea"
-    | "number"
-    | "select"
-    | "phone"
-    | "custom"
-    | "password"
-    | "imgUploader"
-    | "mediaUploader"
-    | "fileUpload"
-    | "otp"
-    | "radio"
-    | "editor"
-    | string;
-  name?: string;
-  label?: string | React.ReactNode;
-  customItem?: React.ReactNode;
-  subContent?: string | React.ReactNode;
-  uploadText?: string;
-  rules?: any;
-  span?: number;
-  placeholder?: string;
-  options?: { value: string; label: string | React.ReactNode }[];
-  multiple?: boolean;
-  maxCount?: any;
-  itemProps?: any;
-  inputProps?: any;
-  onchange?: (value: any) => void;
-  skeletonClassName?: string;
-}
-
-interface FormProps {
-  fields?: FieldProp[];
-  onFinish?: (values: any) => void;
-  onValuesChange?: (values: any) => void;
-  handleErrorFailed?: (errorInfo: any) => void;
-  initialValues?: any;
-  formClass?: string;
-  withOutBtn?: boolean;
-  form?: any;
-  children?: React.ReactNode;
-  btnClass?: string;
-  fromBtn?: string | React.ReactNode;
-  loader?: boolean;
-  cancelBtn?: boolean;
-}
-
-const AppForm = ({
+const AppForm = <T extends object = Record<string, any>>({
   fields,
   onFinish,
   onValuesChange,
   handleErrorFailed,
-  initialValues = {},
+  initialValues = {} as T,
   formClass,
   loader = false,
   withOutBtn = false,
@@ -89,7 +44,7 @@ const AppForm = ({
   btnClass,
   fromBtn,
   cancelBtn,
-}: FormProps) => {
+}: AppFormProps<T>) => {
   const { t } = useTranslation();
   useEffect(() => {
     if (initialValues && form) {
@@ -178,17 +133,29 @@ const AppForm = ({
             endpoint={field.inputProps?.endpoint}
             inputProps={field.inputProps}
             {...field.inputProps}
+<<<<<<< HEAD
           />
+=======
+          >
+            {field.options?.map((option) => (
+              <Select.Option key={String(option.value)} value={option.value}>
+                {option.label}
+              </Select.Option>
+            ))}
+          </Select>
+>>>>>>> main
         );
         break;
       case "radio":
         inputElement = (
           <Radio.Group
-            placeholder={field.placeholder || field.name}
+            // placeholder is not a valid prop for Ant Design's Radio.Group component.
+            // If you need to convey information, use labels on individual Radio.Button.
+            // placeholder={field.placeholder}
             {...field.inputProps}
           >
             {field.options?.map((option) => (
-              <Radio.Button key={option.value} value={option.value}>
+              <Radio.Button key={String(option.value)} value={option.value}>
                 {option.label}
               </Radio.Button>
             ))}
@@ -208,6 +175,7 @@ const AppForm = ({
             form={form}
             type_file="image"
             maxCount={field.maxCount}
+            name={field.name}
             {...field.inputProps}
           />
         );
@@ -216,7 +184,6 @@ const AppForm = ({
         inputElement = (
           <AppUploader
             name={field.name}
-            uploadText={field.uploadText}
             type_file="media"
             form={form}
             maxCount={field.maxCount}
@@ -238,8 +205,10 @@ const AppForm = ({
       case "otp":
         inputElement = (
           <Input.OTP
-            maxLength={6}
-            placeholder={field.placeholder || "Enter OTP"}
+            length={6}
+            // placeholder is not a valid prop for Ant Design's Input.OTP component.
+            // The individual input fields within the OTP component might display a default placeholder.
+            // placeholder={field.placeholder || "Enter OTP"}
             {...field.inputProps}
             dir="ltr"
           />
@@ -249,9 +218,25 @@ const AppForm = ({
         inputElement = (
           <TiptapEditorWithToolbar
             form={form}
+<<<<<<< HEAD
             placeholder={field.placeholder}
             name={field.name!}
+=======
+            name={field.name}
+>>>>>>> main
             {...field.inputProps}
+          />
+        );
+        break;
+      case "multiLangField":
+        inputElement = (
+          <MultiLangField
+            form={form}
+            name={field.name}
+            label={(field.label as string) || field.name}
+            rules={field.rules}
+            type={field.inputProps?.type || "editor"}
+            placeholder={field.placeholder}
           />
         );
         break;
@@ -260,27 +245,22 @@ const AppForm = ({
     }
 
     return (
-      <Col key={`form_item_${field.name}`} span={24} lg={field.span || 24}>
+      <Col
+        key={`form_item_${String(field.name)}`}
+        span={24}
+        lg={field.span || 24}
+      >
         {loader ? (
           <div className="w-full flex items-center justify-center">
             <AppSkeleton className={cn(fieldSkeletonClass, "mb-4")} />
           </div>
         ) : field?.customItem ? (
           field?.customItem
-        ) : field.type == "multiLangField" ? (
-          <MultiLangField
-            form={form}
-            name={field.name!}
-            label={field.label as string}
-            rules={field.rules}
-            type={field.inputProps?.type || "editor"}
-            placeholder={field.placeholder}
-          />
         ) : (
           <Form.Item
             className="relative"
             name={field.name}
-            label={field.label}
+            label={field?.label}
             rules={field.rules}
             {...field.itemProps}
           >
@@ -293,7 +273,7 @@ const AppForm = ({
   };
 
   return (
-    <Form
+    <Form<T>
       layout="vertical"
       form={form}
       onFinish={onFinish}
@@ -314,8 +294,8 @@ const AppForm = ({
                 {fromBtn
                   ? fromBtn
                   : initialValues && Object.keys(initialValues).length
-                  ? t("buttons.edit")
-                  : t("buttons.add")}
+                    ? t("buttons.edit")
+                    : t("buttons.add")}
               </button>
             )}
           </div>

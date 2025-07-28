@@ -1,9 +1,8 @@
-"use client";
 import React, { JSX, useEffect, useState } from "react";
 import { Input, Skeleton, Table, Tabs } from "antd";
 import type { TableProps } from "antd";
 import { IoSearch } from "react-icons/io5";
-import { useLocation, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import TableFilter from "./TableFilter";
 import { Add, Filter } from "iconsax-reactjs";
@@ -67,7 +66,6 @@ const AppTable = <T extends Record<string, any>>({
 }: AppTableProps<T>): JSX.Element => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
   const { keyword, status } = currentSearchParams;
   const page = 1;
   const initialSearchTerm = keyword || "";
@@ -93,9 +91,6 @@ const AppTable = <T extends Record<string, any>>({
     onSuccess: (data) => {
       console.log("Fetched data:", data);
     },
-    props: {
-      staleTime: 180000,
-    },
     enabled: !!endpoint,
   });
   const sourceData = endpoint ? fetchedData : tableData;
@@ -105,7 +100,7 @@ const AppTable = <T extends Record<string, any>>({
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    navigate({ search: { ...currentSearchParams, page: newPage.toString() } as unknown as true});
+    navigate({ to:".", search: { ...currentSearchParams, page: newPage.toString() } as unknown as true});
   };
 
   useEffect(() => {
@@ -128,7 +123,7 @@ const AppTable = <T extends Record<string, any>>({
     } else {
       delete newSearch.keyword;
     }
-    navigate({ to: location.pathname, search: newSearch });
+    navigate({ to:'.', search: newSearch });
   };
 
   const handleSort = (field: string, order: "ascend" | "descend") => {
@@ -169,7 +164,7 @@ const AppTable = <T extends Record<string, any>>({
                   } else {
                     newSearch.status = key;
                   }
-                  navigate({ to: location.pathname, search: newSearch });
+                  navigate({ to: '.', search: newSearch });
                   setActiveTab(key);
                 }}
                 items={tabs.map(({ key, label }: any) => ({ key, label }))}
@@ -238,6 +233,7 @@ const AppTable = <T extends Record<string, any>>({
             <TableFilter
               openDrawer={openDrawer}
               setOpenDrawer={setOpenDrawer}
+              currentSearchParams={currentSearchParams}
               {...filterProps}
             />
           )}

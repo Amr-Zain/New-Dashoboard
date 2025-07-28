@@ -1,4 +1,4 @@
-import axiosInstance from "@/services/axiosClient";
+import axiosInstance from "@/services/instance";
 import { useState, useEffect } from "react";
 import toast from 'react-hot-toast';
 import Cookies from "js-cookie";

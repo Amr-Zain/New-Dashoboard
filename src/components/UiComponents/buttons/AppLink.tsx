@@ -1,9 +1,9 @@
 "use client";
-import React, { PropsWithChildren } from "react";
-import { Link, useLocation } from "@tanstack/react-router"; // Changed imports
+import { PropsWithChildren } from "react";
+import { Link, useLocation } from "@tanstack/react-router";
 
 type Props = {
-  to: string; // Changed href to to for consistency with TanStack Router's Link
+  to: string; 
   className?: any;
   onClick?: () => void;
 };

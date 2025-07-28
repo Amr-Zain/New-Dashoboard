@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute, RouteTypes} from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import AppTable from "@/components/UiComponents/table/AppTable";
 import { Edit, Home, Slider } from "iconsax-reactjs";
@@ -13,11 +13,11 @@ import TableDeleteBtn from "@/components/UiComponents/table/TableDeleteBtn";
 import MainPageWrapper, {
   breadcrumbItem,
 } from "@/components/generalComponents/layout/MainPageWrapper";
+import { FieldProp } from "@/types/AppFormTypes";
 
-
-export const Route = createFileRoute('/_main/sliders/')({
+export const Route = createLazyFileRoute("/_main/sliders/")({
   component: Sliders,
-})
+});
 
 export default function Sliders() {
   const endpoint = `sliders`;
@@ -58,20 +58,17 @@ export default function Sliders() {
             <button onClick={() => handleOpen(record)}>
               <Edit className="size-9 text-green-600 p-2 bg-green-100/80 rounded-full" />
             </button>
-            <TableDeleteBtn
-              item={record}
-              endpoint={endpoint}
-            />
+            <TableDeleteBtn item={record} endpoint={endpoint} />
           </div>
         );
       },
       align: "center",
     },
   ];
-  const fields = [
+  const fields: FieldProp[] = [
     {
       type: "imgUploader",
-      uploadText: t("form.uploadImageText"),
+      // uploadText: t("form.uploadImageText"),
       name: "image",
       inputProps: {
         model: "sliders",
@@ -153,7 +150,7 @@ export default function Sliders() {
         endpoint={endpoint}
         headerModal={t("labels.add_slider")}
         handleHeaderModal={() => setFormModal(true)}
-        currentSearchParams={{}}
+        currentSearchParams={Route.useSearch()}
       />
       <AppModal
         open={formModal}

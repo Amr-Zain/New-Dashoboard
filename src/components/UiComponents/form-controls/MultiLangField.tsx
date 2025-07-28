@@ -5,10 +5,17 @@ import { Form, FormProps } from "antd";
 // import AppEditor from "./AppEditor";
 import Input from "antd/es/input/Input";
 import { useTranslation } from "react-i18next";
+<<<<<<< HEAD
 import TiptapEditorWithToolbar from "./TiptapEditor";
 
 export interface MultiLangFieldProps {
   form: FormProps;
+=======
+import { FormInstance } from "antd/lib";
+
+export interface MultiLangFieldProps {
+  form: FormInstance;
+>>>>>>> main
   name: string;
   type?: "input" | "editor";
   label?: string;

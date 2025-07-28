@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "@tanstack/react-router"; 
+import { useNavigate } from "@tanstack/react-router";
 import MainPageWrapper, {
   breadcrumbItem,
 } from "@/components/generalComponents/layout/MainPageWrapper";
@@ -9,6 +9,7 @@ import { Form } from "antd";
 import { generateFinalOut, generateInitialValues } from "@/utils/helpers";
 import toast from "react-hot-toast";
 import { useMutate } from "@/hooks/UseMutate";
+import { FieldProp } from "@/types/AppFormTypes";
 
 export default function ArticaleForm({ fetchData }: { fetchData?: any }) {
   const endpoint = `articals`;
@@ -18,8 +19,8 @@ export default function ArticaleForm({ fetchData }: { fetchData?: any }) {
 
   const breadcrumbItems: breadcrumbItem[] = [
     { label: t("pages.home"), to: "/", icon: <Home /> },
-    { label: t("pages.articles"), to: "/articles", icon: <Slider /> }, 
-    { label: fetchData ? t("actions.edit") : t("actions.add") }, 
+    { label: t("pages.articles"), to: "/articles", icon: <Slider /> },
+    { label: fetchData ? t("actions.edit") : t("actions.add") },
   ];
 
   const { mutate, isLoading } = useMutate({
@@ -33,7 +34,11 @@ export default function ArticaleForm({ fetchData }: { fetchData?: any }) {
           name: t("pages.articles"),
         })
       );
+<<<<<<< HEAD
       navigate({ to: "/articles" , search:{page:'1'}});
+=======
+      navigate({ to: "/articles", search: { page: "1" } });
+>>>>>>> main
     },
     onError: (err: any) => {
       toast.error(err?.response?.data?.message);
@@ -41,10 +46,10 @@ export default function ArticaleForm({ fetchData }: { fetchData?: any }) {
     formData: true,
   });
 
-  const fields = [
+  const fields: FieldProp[] = [
     {
       type: "imgUploader",
-      uploadText: t("form.uploadImageText"),
+      // uploadText: t("form.uploadImageText"),
       name: "image",
       inputProps: {
         model: "sliders",
@@ -105,7 +110,7 @@ export default function ArticaleForm({ fetchData }: { fetchData?: any }) {
         form={form}
         initialValues={generateInitialValues(fetchData?.data)}
         fields={fields}
-        loader={isLoading} 
+        loader={isLoading}
         onFinish={handleSubmit}
       />
     </MainPageWrapper>

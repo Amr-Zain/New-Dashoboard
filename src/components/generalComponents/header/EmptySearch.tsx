@@ -1,4 +1,4 @@
-import { getSearchParamsObject } from "@/utils/helpers";
+/* import { getSearchParamsObject } from "@/utils/helpers";
 import { SearchNormal1 } from "iconsax-reactjs";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
@@ -18,3 +18,4 @@ const EmptySearch = ({text}:{text?:string}) => {
 };
 
 export default EmptySearch;
+ */

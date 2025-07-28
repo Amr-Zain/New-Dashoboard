@@ -14,6 +14,7 @@ import { deleteAuthedUserData, setAuthedUserData } from "@/store/profile";
 import { useNavigate } from "@tanstack/react-router"; // Changed import
 import ThemeSwitch from "@/components/UiComponents/buttons/ThemeSwitch";
 import ImageWithFallback from "@/components/UiComponents/ImageWithFallback";
+import { FieldProp } from "@/types/AppFormTypes";
 
 export const Route = createFileRoute("/auth/login")({
   component: Login,
@@ -27,7 +28,7 @@ function Login() {
   const rtl = useIsRTL();
   const router = useNavigate(); 
 
-  const fields = [
+  const fields: FieldProp[] = [
     {
       type: "text",
       name: "email",

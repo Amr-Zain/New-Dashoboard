@@ -8,22 +8,29 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
 import { Route as MainRouteRouteImport } from './routes/_main/route'
 import { Route as MainIndexRouteImport } from './routes/_main/index'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as MainProfileRouteImport } from './routes/_main/profile'
-import { Route as MainAboutRouteImport } from './routes/_main/about'
-import { Route as MainSlidersIndexRouteImport } from './routes/_main/sliders/index'
 import { Route as MainOwnerIndexRouteImport } from './routes/_main/owner/index'
 import { Route as MainNotificationsIndexRouteImport } from './routes/_main/notifications/index'
 import { Route as MainBranchesIndexRouteImport } from './routes/_main/branches/index'
 import { Route as MainArticlesIndexRouteImport } from './routes/_main/articles/index'
+<<<<<<< HEAD
 import { Route as MainBranchesAddIndexRouteImport } from './routes/_main/branches/add.index'
 import { Route as MainArticlesAddIndexRouteImport } from './routes/_main/articles/add.index'
 import { Route as MainBranchesBranchIdEditRouteImport } from './routes/_main/branches/$branchId/edit'
+=======
+import { Route as MainArticlesAddIndexRouteImport } from './routes/_main/articles/add/index'
+>>>>>>> main
 import { Route as MainArticlesArticalIdEditRouteImport } from './routes/_main/articles/$articalId/edit'
+
+const MainAboutLazyRouteImport = createFileRoute('/_main/about')()
+const MainSlidersIndexLazyRouteImport = createFileRoute('/_main/sliders/')()
 
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/auth',
@@ -39,6 +46,11 @@ const MainIndexRoute = MainIndexRouteImport.update({
   path: '/',
   getParentRoute: () => MainRouteRoute,
 } as any)
+const MainAboutLazyRoute = MainAboutLazyRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => MainRouteRoute,
+} as any).lazy(() => import('./routes/_main/about.lazy').then((d) => d.Route))
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -49,16 +61,13 @@ const MainProfileRoute = MainProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => MainRouteRoute,
 } as any)
-const MainAboutRoute = MainAboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => MainRouteRoute,
-} as any)
-const MainSlidersIndexRoute = MainSlidersIndexRouteImport.update({
+const MainSlidersIndexLazyRoute = MainSlidersIndexLazyRouteImport.update({
   id: '/sliders/',
   path: '/sliders/',
   getParentRoute: () => MainRouteRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/_main/sliders/index.lazy').then((d) => d.Route),
+)
 const MainOwnerIndexRoute = MainOwnerIndexRouteImport.update({
   id: '/owner/',
   path: '/owner/',
@@ -104,15 +113,15 @@ const MainArticlesArticalIdEditRoute =
 
 export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteRouteWithChildren
-  '/about': typeof MainAboutRoute
   '/profile': typeof MainProfileRoute
   '/auth/login': typeof AuthLoginRoute
+  '/about': typeof MainAboutLazyRoute
   '/': typeof MainIndexRoute
   '/articles': typeof MainArticlesIndexRoute
   '/branches': typeof MainBranchesIndexRoute
   '/notifications': typeof MainNotificationsIndexRoute
   '/owner': typeof MainOwnerIndexRoute
-  '/sliders': typeof MainSlidersIndexRoute
+  '/sliders': typeof MainSlidersIndexLazyRoute
   '/articles/$articalId/edit': typeof MainArticlesArticalIdEditRoute
   '/branches/$branchId/edit': typeof MainBranchesBranchIdEditRoute
   '/articles/add': typeof MainArticlesAddIndexRoute
@@ -120,15 +129,15 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRouteRouteWithChildren
-  '/about': typeof MainAboutRoute
   '/profile': typeof MainProfileRoute
   '/auth/login': typeof AuthLoginRoute
+  '/about': typeof MainAboutLazyRoute
   '/': typeof MainIndexRoute
   '/articles': typeof MainArticlesIndexRoute
   '/branches': typeof MainBranchesIndexRoute
   '/notifications': typeof MainNotificationsIndexRoute
   '/owner': typeof MainOwnerIndexRoute
-  '/sliders': typeof MainSlidersIndexRoute
+  '/sliders': typeof MainSlidersIndexLazyRoute
   '/articles/$articalId/edit': typeof MainArticlesArticalIdEditRoute
   '/branches/$branchId/edit': typeof MainBranchesBranchIdEditRoute
   '/articles/add': typeof MainArticlesAddIndexRoute
@@ -138,15 +147,15 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_main': typeof MainRouteRouteWithChildren
   '/auth': typeof AuthRouteRouteWithChildren
-  '/_main/about': typeof MainAboutRoute
   '/_main/profile': typeof MainProfileRoute
   '/auth/login': typeof AuthLoginRoute
+  '/_main/about': typeof MainAboutLazyRoute
   '/_main/': typeof MainIndexRoute
   '/_main/articles/': typeof MainArticlesIndexRoute
   '/_main/branches/': typeof MainBranchesIndexRoute
   '/_main/notifications/': typeof MainNotificationsIndexRoute
   '/_main/owner/': typeof MainOwnerIndexRoute
-  '/_main/sliders/': typeof MainSlidersIndexRoute
+  '/_main/sliders/': typeof MainSlidersIndexLazyRoute
   '/_main/articles/$articalId/edit': typeof MainArticlesArticalIdEditRoute
   '/_main/branches/$branchId/edit': typeof MainBranchesBranchIdEditRoute
   '/_main/articles/add/': typeof MainArticlesAddIndexRoute
@@ -156,9 +165,9 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/auth'
-    | '/about'
     | '/profile'
     | '/auth/login'
+    | '/about'
     | '/'
     | '/articles'
     | '/branches'
@@ -172,9 +181,9 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
-    | '/about'
     | '/profile'
     | '/auth/login'
+    | '/about'
     | '/'
     | '/articles'
     | '/branches'
@@ -189,9 +198,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_main'
     | '/auth'
-    | '/_main/about'
     | '/_main/profile'
     | '/auth/login'
+    | '/_main/about'
     | '/_main/'
     | '/_main/articles/'
     | '/_main/branches/'
@@ -232,6 +241,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainIndexRouteImport
       parentRoute: typeof MainRouteRoute
     }
+    '/_main/about': {
+      id: '/_main/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof MainAboutLazyRouteImport
+      parentRoute: typeof MainRouteRoute
+    }
     '/auth/login': {
       id: '/auth/login'
       path: '/login'
@@ -246,18 +262,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainProfileRouteImport
       parentRoute: typeof MainRouteRoute
     }
-    '/_main/about': {
-      id: '/_main/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof MainAboutRouteImport
-      parentRoute: typeof MainRouteRoute
-    }
     '/_main/sliders/': {
       id: '/_main/sliders/'
       path: '/sliders'
       fullPath: '/sliders'
-      preLoaderRoute: typeof MainSlidersIndexRouteImport
+      preLoaderRoute: typeof MainSlidersIndexLazyRouteImport
       parentRoute: typeof MainRouteRoute
     }
     '/_main/owner/': {
@@ -320,14 +329,14 @@ declare module '@tanstack/react-router' {
 }
 
 interface MainRouteRouteChildren {
-  MainAboutRoute: typeof MainAboutRoute
   MainProfileRoute: typeof MainProfileRoute
+  MainAboutLazyRoute: typeof MainAboutLazyRoute
   MainIndexRoute: typeof MainIndexRoute
   MainArticlesIndexRoute: typeof MainArticlesIndexRoute
   MainBranchesIndexRoute: typeof MainBranchesIndexRoute
   MainNotificationsIndexRoute: typeof MainNotificationsIndexRoute
   MainOwnerIndexRoute: typeof MainOwnerIndexRoute
-  MainSlidersIndexRoute: typeof MainSlidersIndexRoute
+  MainSlidersIndexLazyRoute: typeof MainSlidersIndexLazyRoute
   MainArticlesArticalIdEditRoute: typeof MainArticlesArticalIdEditRoute
   MainBranchesBranchIdEditRoute: typeof MainBranchesBranchIdEditRoute
   MainArticlesAddIndexRoute: typeof MainArticlesAddIndexRoute
@@ -335,14 +344,14 @@ interface MainRouteRouteChildren {
 }
 
 const MainRouteRouteChildren: MainRouteRouteChildren = {
-  MainAboutRoute: MainAboutRoute,
   MainProfileRoute: MainProfileRoute,
+  MainAboutLazyRoute: MainAboutLazyRoute,
   MainIndexRoute: MainIndexRoute,
   MainArticlesIndexRoute: MainArticlesIndexRoute,
   MainBranchesIndexRoute: MainBranchesIndexRoute,
   MainNotificationsIndexRoute: MainNotificationsIndexRoute,
   MainOwnerIndexRoute: MainOwnerIndexRoute,
-  MainSlidersIndexRoute: MainSlidersIndexRoute,
+  MainSlidersIndexLazyRoute: MainSlidersIndexLazyRoute,
   MainArticlesArticalIdEditRoute: MainArticlesArticalIdEditRoute,
   MainBranchesBranchIdEditRoute: MainBranchesBranchIdEditRoute,
   MainArticlesAddIndexRoute: MainArticlesAddIndexRoute,
