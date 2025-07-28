@@ -24,6 +24,7 @@ import MultiLangField from "../form-controls/MultiLangField";
 import { cn } from "@/utils/helpers";
 import AppSkeleton from "../Loader/AppSkeleton";
 import TiptapEditorWithToolbar from "../form-controls/TiptapEditor";
+import AppSelect from "../form-controls/AppSelect";
 
 export interface FieldProp {
   type:
@@ -168,19 +169,16 @@ const AppForm = ({
           <Rate style={{ fontSize: "40px" }} {...field.inputProps} />
         );
         break;
-      case "select":
+     case "select":
         inputElement = (
-          <Select
+          <AppSelect
             placeholder={field.placeholder || field.name}
             mode={field.multiple ? "multiple" : undefined}
+            options={field.options}
+            endpoint={field.inputProps?.endpoint}
+            inputProps={field.inputProps}
             {...field.inputProps}
-          >
-            {field.options?.map((option) => (
-              <Select.Option key={option.value} value={option.value}>
-                {option.label}
-              </Select.Option>
-            ))}
-          </Select>
+          />
         );
         break;
       case "radio":

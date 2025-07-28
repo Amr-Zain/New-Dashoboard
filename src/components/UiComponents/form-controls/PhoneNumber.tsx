@@ -8,7 +8,7 @@ import AppSkeleton from "../Loader/AppSkeleton";
 import axiosInstance from "@/services/axiosGeneral";
 import { useDispatch, useSelector } from "react-redux";
 
-interface PhoneNumberProps {
+export interface PhoneNumberProps {
   name?: string;
   country?: string;
   placeholder?: string;

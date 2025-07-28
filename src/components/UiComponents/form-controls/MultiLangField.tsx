@@ -2,11 +2,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Form, FormProps } from "antd";
-import AppEditor from "./AppEditor";
+// import AppEditor from "./AppEditor";
 import Input from "antd/es/input/Input";
 import { useTranslation } from "react-i18next";
+import TiptapEditorWithToolbar from "./TiptapEditor";
 
-interface MultiLangFieldProps {
+export interface MultiLangFieldProps {
   form: FormProps;
   name: string;
   type?: "input" | "editor";
@@ -38,7 +39,7 @@ const MultiLangField = ({
   const renderField = (langKey: string) => {
     if (type === "editor") {
       return (
-        <AppEditor
+        <TiptapEditorWithToolbar
           form={form}
           name={`${name}_${langKey}`}
           placeholder={placeholder || label}

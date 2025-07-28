@@ -6,9 +6,10 @@ import AppForm from "@/components/UiComponents/forms/AppForm";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 import { ArrowUp } from "iconsax-reactjs";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearch } from "@tanstack/react-router"; // Changed imports
+import { FieldProp } from "@/types/AppFormTypes";
 
-interface Props {
+interface Props{
   openDrawer: boolean;
   setOpenDrawer: (value: boolean) => void;
   statusData?: { id: string; name: string }[];
@@ -16,6 +17,7 @@ interface Props {
   dateTitle?: string;
   statusKey?: string;
   FilterByPrice?: boolean;
+  currentSearchParams: Record<string,any>
 }
 
 const TableFilter = ({
@@ -26,19 +28,23 @@ const TableFilter = ({
   dateTitle,
   FilterByPrice,
   statusKey = "status",
+  currentSearchParams
 }: Props) => {
   const [selectedType, setSelectedType] = useState<any>(null);
-  const router = useNavigate();
-  const [searchParams,setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  // const currentSearchParams = Route.useSearch() as any;
   const [form] = useForm();
-  const {t} = useTranslation();
-  const [price, setPrice] = useState<{ min: number | null; max: number | null }>({
+  const { t } = useTranslation();
+  const [price, setPrice] = useState<{
+    min: number | null;
+    max: number | null;
+  }>({
     min: null,
     max: null,
   });
 
   // Setup form fields
-  const fields = [
+  const fields: FieldProp[] = [
     {
       type: "date",
       name: "from",
@@ -57,11 +63,14 @@ const TableFilter = ({
 
   // Load initial values from URL
   useEffect(() => {
-    const from = searchParams.get("from");
-    const to = searchParams.get("to");
-    const min_price = searchParams.get("min_price");
-    const max_price = searchParams.get("max_price");
-    const statusValue = searchParams.get(statusKey);
+    // Access search parameters directly from currentSearchParams object
+
+    const from = currentSearchParams.from;
+    const to = currentSearchParams.to;
+    const min_price = currentSearchParams.min_price;
+    const max_price = currentSearchParams.max_price;
+    const statusValue = currentSearchParams[statusKey];
+    // Dynamic key access
 
     form.setFieldsValue({
       from: from ? dayjs(from) : null,
@@ -78,18 +87,30 @@ const TableFilter = ({
     if (statusValue) {
       setSelectedType(statusValue);
     }
-  }, []);
+  }, [currentSearchParams, FilterByPrice, statusKey, form]); // Added form to dependencies
 
   const updateSearchParams = (params: any) => {
-    const newSearchParams = new URLSearchParams(searchParams);
+    const newSearch = { ...currentSearchParams }; // Start with current search params
     Object.entries(params).forEach(([key, value]: any) => {
-      value ? newSearchParams.set(key, value) : newSearchParams.delete(key);
+      // Convert value to string for URL search params
+      if (value) {
+        newSearch[key] = String(value);
+      } else {
+        delete newSearch[key]; // Remove if value is falsy
+      }
     });
-    router(`?${newSearchParams.toString()}`);
+    // Use navigate to update the URL search parameters
+    navigate({ search: newSearch,to:'.' });
   };
 
   const clearFilter = () => {
-    updateSearchParams({ from: "", to: "", min_price: "", max_price: "" , [statusKey]:"" });
+    updateSearchParams({
+      from: "",
+      to: "",
+      min_price: "",
+      max_price: "",
+      [statusKey]: "",
+    });
     form.resetFields();
     setSelectedType(null);
     setPrice({ min: null, max: null });

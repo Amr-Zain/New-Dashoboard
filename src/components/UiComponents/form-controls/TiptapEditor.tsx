@@ -17,7 +17,7 @@ import OrderedList from "@tiptap/extension-ordered-list";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
 import { useEffect } from "react";
-import { Form, Select } from "antd";
+import { Form, FormInstance, Select } from "antd";
 import DOMPurify from "dompurify";
 import { AlignJustify, ImagePlus } from "lucide-react";
 import Image from "@tiptap/extension-image";
@@ -50,13 +50,13 @@ import ImageUploadButton from "./ImageUploadButton";
 
 const { Option } = Select;
 
-interface Props {
+export interface EditorProps {
   name: string;
   placeholder?: string;
-  form: any;
+  form: FormInstance;
 }
 
-const TiptapEditorWithToolbar = ({ name, form }: Props) => {
+const TiptapEditorWithToolbar = ({ name, form }: EditorProps) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
