@@ -61,17 +61,8 @@ const SearchComponent = () => {
     return () => clearTimeout(handler);
   }, [searchTerm]);
 
-  // Perform search whenever debounced term changes
-  useEffect(() => {
-    if (!debouncedTerm) {
-      setProducts(null);
-      return;
-    }
-    fetchSearchResults(debouncedTerm);
-  }, [debouncedTerm]);
-
   // Your existing search API call wrapped for re-use
-  const fetchSearchResults = async (keyword: string) => {
+  const fetchSearchResults = React.useCallback(async (keyword: string) => {
     setOpen(true);
     if (!keyword) return;
     try {
@@ -89,7 +80,16 @@ const SearchComponent = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [searchHistory]);
+
+  // Perform search whenever debounced term changes
+  useEffect(() => {
+    if (!debouncedTerm) {
+      setProducts(null);
+      return;
+    }
+    fetchSearchResults(debouncedTerm);
+  }, [debouncedTerm, fetchSearchResults]);
 
   const handleHistoryClick = (item: string) => {
     setSearchTerm(item);

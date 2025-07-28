@@ -73,7 +73,7 @@ const PhoneNumber: React.FC<PhoneNumberProps> = ({
         setPhoneNumber(fullPhone.replace(/\s/g, ""));
       }
     }
-  }, [form.getFieldValue(name)]);
+  }, [form, name]);
 
   const handleChange = (value: string, data: any) => {
     setPhoneNumber(value);

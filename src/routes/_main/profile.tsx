@@ -13,8 +13,8 @@ export const Route = createFileRoute("/_main/profile")({
     return { tab: (search.tab as string) || "edit-profile" };
   },
   loaderDeps: ({ search: { tab } }) => ({ tab }),
-  loader: ({ deps: { tab } ,}) => {
-    tab;
+  loader: ({ deps: { tab } }) => {
+    return tab;
   },
 });
 

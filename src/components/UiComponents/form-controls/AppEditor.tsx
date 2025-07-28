@@ -14,7 +14,7 @@ const AppEditor = ({placeholder,form,name}:EditorProps) => {
     if(form?.getFieldValue(name)){
       setHtml(form.getFieldValue(name))
     }
-  },[form?.getFieldValue(name)])
+  },[form, name])
   
   function onChange(e: any) {
     form?.setFieldValue(name,e.target.value);

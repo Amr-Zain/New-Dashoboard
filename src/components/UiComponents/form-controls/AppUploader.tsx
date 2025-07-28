@@ -54,7 +54,7 @@ const AppUploader = <T extends object = Record<string, any>>({
     ) {
       setFileList(initialFileList);
     }
-  }, [initialFileList]);
+  }, [initialFileList, fileList]);
 
   const fileListRef = useRef(fileList);
   fileListRef.current = fileList;
@@ -137,7 +137,7 @@ const AppUploader = <T extends object = Record<string, any>>({
       setLoading(true);
       const newFiles: UploadFile[] = [];
 
-      for (let file of files) {
+      for (const file of files) {
         if (fileList.some((f) => f.name === file.name)) {
           continue;
         }
@@ -170,7 +170,7 @@ const AppUploader = <T extends object = Record<string, any>>({
 
       setFileList(updatedList);
 
-      for (let file of newFiles) {
+      for (const file of newFiles) {
         try {
           const response = await uploadToServer(file.originFileObj!);
 

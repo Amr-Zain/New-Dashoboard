@@ -1,27 +1,40 @@
-import js from "@eslint/js";
-import globals from "globals";
-import reactHooks from "eslint-plugin-react-hooks";
-import reactRefresh from "eslint-plugin-react-refresh";
+// import globals from "globals";
 import tseslint from "typescript-eslint";
+import pluginReact from "eslint-plugin-react";
+import pluginReactHooks from "eslint-plugin-react-hooks";
+import pluginReactRefresh from "eslint-plugin-react-refresh";
+import js from "@eslint/js";
 
 export default tseslint.config(
-  { ignores: ["dist"] },
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ["**/*.{ts,tsx}"],
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
-    },
+    ignores: ["dist", "vite.config.d.ts", "postcss.config.cjs"],
+  },
+  js.configs.recommended,
+  {
+    files: ["**/*.{ts,tsx}", "!vite.config.d.ts", "!**/*.cjs"],
+    extends: [...tseslint.configs.recommended],
     plugins: {
-      "react-hooks": reactHooks,
-      "react-refresh": reactRefresh,
+      react: pluginReact,
+      "react-hooks": pluginReactHooks,
+      "react-refresh": pluginReactRefresh,
+    },
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        project: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+      globals: {
+        ...globals.browser,
+      },
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
+      ...pluginReact.configs.recommended.rules,
+      ...pluginReactHooks.configs.recommended.rules,
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": "off",
       "no-unused-vars": "off",
+      "react/react-in-jsx-scope": "off",
       "react/jsx-no-constructed-context-values": "warn",
       "react/jsx-no-undef": "error",
       "react/jsx-key": "warn",
@@ -30,5 +43,11 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
     },
-  }
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+  },
+  
 );

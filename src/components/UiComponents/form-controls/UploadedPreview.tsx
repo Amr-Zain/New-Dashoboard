@@ -60,6 +60,7 @@ export default function UploadedPreview({
       >
         {fileList.map((file) => (
           <CardPreview
+            key={file.uid}
             file={file}
             handlePreview={handlePreview}
             showPreview={showPreview}

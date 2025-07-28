@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import {
   Form,
   Input,
@@ -292,9 +290,11 @@ const AppForm = <T extends object = Record<string, any>>({
                 type="button"
                 className="app-btn alert-btn"
                 onClick={() => {
-                  Object.keys(initialValues).length
-                    ? form.setFieldsValue(initialValues)
-                    : form.resetFields();
+                  if (Object.keys(initialValues).length) {
+                    form.setFieldsValue(initialValues);
+                  } else {
+                    form.resetFields();
+                  }
                 }}
               >
                 {t("buttons.cancel")}

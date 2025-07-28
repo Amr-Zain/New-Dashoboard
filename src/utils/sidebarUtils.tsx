@@ -1,4 +1,3 @@
-
 import { ArchiveTick, Category, Edit, Profile2User, SliderHorizontal, TableDocument, TruckFast, WalletMoney } from 'iconsax-reactjs';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,7 +21,7 @@ export type ModuleConfig_TP = {
     icon?: React.ReactNode;
     link?: string;
     permission?: string;
-    items?: MenuItem_TP[] | true |false;
+    items?: MenuItem_TP[] | boolean;
     heading?: boolean;
 };
 

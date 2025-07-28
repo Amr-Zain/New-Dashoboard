@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from '@tanstack/react-router'; // Changed imports
 import { toggleSidebar } from '@/store/themeConfigSlice';
-import { hasPermission, SideBarItemsFn, sideBarModulesConfig } from '@/components/generalComponents/layout/sidebarItems';
+import { SideBarItemsFn, sideBarModulesConfig, hasPermission } from '@/utils/sidebarUtils.tsx';
+
 import ImageWithFallback from '@/components/UiComponents/ImageWithFallback';
 import { RootState } from '@/store';
 import AppCollapse from '@/components/UiComponents/Collapse/AppCollapse';
@@ -25,7 +26,7 @@ const Sidebar = () => {
     if (window.innerWidth < 1024 && themeConfig.sidebar) {
       dispatch(toggleSidebar());
     }
-  }, [location]);
+  }, [location, dispatch, themeConfig.sidebar]);
 
   return (
     <div className={cn(semidark ? '' : '',"relative")}>

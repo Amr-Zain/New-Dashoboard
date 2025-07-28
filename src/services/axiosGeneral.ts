@@ -9,10 +9,10 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    let locale = Cookies.get("NEXT_LOCALE") || "en";
+    const locale = Cookies.get("NEXT_LOCALE") || "en";
     const guestToken = Cookies.get("guest_token");
     const userToken = Cookies.get("user_token");
-    let location : any = Cookies.get("client_location");
+    const location : any = Cookies.get("client_location");
 
     if (!config.params) {
       config.params = {};

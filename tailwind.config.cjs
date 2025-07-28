@@ -1,4 +1,4 @@
-/** @type {import('tailwindcss').Config} */
+import containerQueries from "@tailwindcss/container-queries";
 
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -58,7 +58,7 @@ export default {
         "3xl":
           "0 2px 2px rgb(224 230 237 / 46%), 1px 6px 7px rgb(224 230 237 / 46%)",
       },
-      typography: ({ theme }) => ({
+      typography: () => ({
         DEFAULT: {
           css: {
             h1: { fontSize: "40px", marginBottom: "0.5rem", marginTop: 0 },
@@ -78,5 +78,5 @@ export default {
       },
     },
   },
-  plugins: [require("@tailwindcss/container-queries")],
+  plugins: [containerQueries],
 };

@@ -13,7 +13,7 @@ const GeneralApICaller = () => {
             console.log("🚀 ~ useEffect ~ userObject:", userObject)
             dispatch(setAuthedUserData(userObject))
         }
-    }, []);
+    }, [dispatch, storedUser]);
 
     return null
 }

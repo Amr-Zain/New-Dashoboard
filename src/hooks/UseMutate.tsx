@@ -30,7 +30,7 @@ export function useMutate<Response_T = unknown, Request_T = unknown>({
   general = false,
   mutationOptions,
 }: UseMutateProps_TP<Response_T, Request_T>): {
-  data: Response_T | undefined;
+  data: AxiosResponse<Response_T> | undefined;
   isLoading: boolean;
   isSuccess: boolean;
   mutate: (variables: Request_T) => void;
@@ -74,7 +74,7 @@ export function useMutate<Response_T = unknown, Request_T = unknown>({
   });
 
   return {
-    data: mutation.data?.data,
+    data: mutation.data,
     isLoading: mutation.isPending,
     isSuccess: mutation.isSuccess,
     mutate: mutation.mutate,

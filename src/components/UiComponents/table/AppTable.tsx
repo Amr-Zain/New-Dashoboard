@@ -78,7 +78,6 @@ const AppTable = <T extends Record<string, any>>({
   const {
     data: fetchedData,
     isLoading,
-    refetch,
   } = useFetch<any>({
     queryKey: [`${endpoint}`],
     endpoint: endpoint || "",

@@ -28,18 +28,18 @@ interface CommenProps {
   onchange?: (value: any) => void;
   skeletonClassName?: string;
 }
-interface TextInputProps extends InputProps { }
-interface PasswordInputProps extends PasswordProps { }
-interface NumberInputProps extends InputProps { }
-interface DateInputProps extends DatePickerProps { }
-interface TextAreaInputProps extends TextAreaProps { }
-interface PhoneInputProps extends PhoneNumberProps { }
-interface RateInputProps extends RateProps { }
-interface SelectInputProps extends SelectProps { }
-interface RadioInputProps extends RadioGroupProps { }
-interface CheckboxInputProps extends CheckboxProps { }
-interface OTPInputProps extends OTPProps { }
-interface MultiLangFieldInputProps extends MultiLangFieldProps { }
+interface TextInputProps extends InputProps, Record<string, unknown> {}
+interface PasswordInputProps extends PasswordProps, Record<string, unknown> {}
+interface NumberInputProps extends InputProps, Record<string, unknown> {}
+interface DateInputProps extends DatePickerProps, Record<string, unknown> {}
+interface TextAreaInputProps extends TextAreaProps, Record<string, unknown> {}
+interface PhoneInputProps extends PhoneNumberProps, Record<string, unknown> {}
+interface RateInputProps extends RateProps, Record<string, unknown> {}
+interface SelectInputProps extends SelectProps, Record<string, unknown> {}
+interface RadioInputProps extends RadioGroupProps, Record<string, unknown> {}
+interface CheckboxInputProps extends CheckboxProps, Record<string, unknown> {}
+interface OTPInputProps extends OTPProps, Record<string, unknown> {}
+interface MultiLangFieldInputProps extends MultiLangFieldProps, Record<string, unknown> {}
 
 // Update FieldProp to be a discriminated union
 type Field =

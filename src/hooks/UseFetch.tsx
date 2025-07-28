@@ -1,18 +1,19 @@
-import { 
-  useQuery, 
-  useSuspenseQuery, 
-  UseQueryOptions, 
-  QueryKey, 
-  UseSuspenseQueryOptions 
-} from '@tanstack/react-query';
-import { useTranslation } from 'react-i18next';
-import { useIsRTL } from './useIsRTL';
-import axiosInstance from '@/services/instance';
-import { logOut } from '@/utils/helpers';
-import { useNavigate } from '@tanstack/react-router';
-import toast from 'react-hot-toast';
+import {
+  useQuery,
+  useSuspenseQuery,
+  UseQueryOptions,
+  QueryKey,
+  UseSuspenseQueryOptions,
+} from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
+import { useIsRTL } from "./useIsRTL";
+import axiosInstance from "@/services/instance";
+import { logOut } from "@/utils/helpers";
+import { useNavigate } from "@tanstack/react-router";
+import toast from "react-hot-toast";
 
-interface UseFetchProps<TData = unknown, TError = unknown> extends Omit<UseQueryOptions<TData, TError>, 'queryKey' | 'queryFn'> {
+interface UseFetchProps<TData = unknown, TError = unknown>
+  extends Omit<UseQueryOptions<TData, TError>, "queryKey" | "queryFn"> {
   queryKey: QueryKey;
   endpoint: string | null;
   enabled?: boolean;
@@ -21,7 +22,7 @@ interface UseFetchProps<TData = unknown, TError = unknown> extends Omit<UseQuery
   onSuccess?: (data: TData) => void;
   general?: boolean;
   params?: Record<string, any>;
-  suspense?: boolean; 
+  suspense?: boolean;
 }
 
 function useFetch<TData = unknown, TError = unknown>({
@@ -39,7 +40,9 @@ function useFetch<TData = unknown, TError = unknown>({
   const { t } = useTranslation();
   const isRTL = useIsRTL();
   const router = useNavigate();
-  const baseURL = general ? import.meta.env.VITE_BASE_GENERAL_URL : import.meta.env.VITE_BASE_URL;
+  const baseURL = general
+    ? import.meta.env.VITE_BASE_GENERAL_URL
+    : import.meta.env.VITE_BASE_URL;
 
   const paginationParams = {
     page: params?.page || 1,
@@ -49,37 +52,37 @@ function useFetch<TData = unknown, TError = unknown>({
   const queryFn = async () => {
     try {
       if (!endpoint) {
-        throw new Error('Endpoint is required');
+        throw new Error("Endpoint is required");
       }
-      
-      const res = await axiosInstance.get<TData>(`${baseURL}/${endpoint}`, { 
-        params: { ...params, ...paginationParams } 
+
+      const res = await axiosInstance.get<TData>(`${baseURL}/${endpoint}`, {
+        params: { ...params, ...paginationParams },
       });
-      
+
       if ((res.data as any)?.error) {
-        throw new Error((res.data as any).message || t('no_data'));
+        throw new Error((res.data as any).message || t("no_data"));
       }
-      
+
       if (onSuccess) {
         onSuccess(res.data);
       }
-      
+
       return res.data;
     } catch (err: any) {
       if (originalOnError) {
         originalOnError(err);
       }
-      
+
       // Don't show toast in suspense mode as error boundaries will handle it
       if (!suspense) {
         toast.error(err?.response?.data?.message || err.message);
       }
-      
+
       if (err.response?.status === 401) {
         logOut();
         router({ to: "/auth/login" });
       }
-      
+
       throw err;
     }
   };
@@ -94,9 +97,13 @@ function useFetch<TData = unknown, TError = unknown>({
   };
 
   if (suspense) {
-    return useSuspenseQuery(commonOptions as UseSuspenseQueryOptions<TData, TError>);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    return useSuspenseQuery(
+      commonOptions as UseSuspenseQueryOptions<TData, TError>
+    );
   }
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   return useQuery(commonOptions);
 }
 

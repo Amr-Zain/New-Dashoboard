@@ -34,7 +34,7 @@ const ThemeCustomize = () => {
       darkColor: savedTheme === "light" ? "rgb(246, 247, 248)" : "rgb(29, 35, 41)",
       textColor: savedTheme === "light" ? "rgb(45, 35, 75)" : "rgb(170, 184, 197)",
     }));
-  }, [localStorage.getItem("theme")]);
+  }, [theme]);
 
   // Update the CSS variables based on custom colors
   const updateThemeColors = () => {

@@ -1,5 +1,6 @@
 import {
   createFileRoute,
+  Link,
   redirect,
   Route as RouteType,
 } from "@tanstack/react-router";
@@ -75,13 +76,14 @@ function Articles() {
       render: (_: any, record: any) => {
         return (
           <div className="flex items-center gap-2 justify-center">
-            <button
-              onClick={() => router({ to: `/articles/${record?.id}/edit` })}
+            <Link
+              to={`/articles/$articalId/edit`}
+              params={{ articalId: record.id }}
+              preload="intent"
             >
               {" "}
-              {/* Changed navigation call */}
               <Edit className="size-9 text-green-600 p-2 bg-green-100/80 rounded-full" />
-            </button>
+            </Link>
             <TableDeleteBtn item={record} endpoint={endpoint} />
           </div>
         );
@@ -101,7 +103,8 @@ function Articles() {
         tableData={data}
         headerModal={t("labels.add_slider")}
         handleHeaderModal={() => router({ to: "/articles/add" })}
-        currentSearchParams={currentSearchParams}      />
+        currentSearchParams={currentSearchParams}
+      />
     </MainPageWrapper>
   );
 }

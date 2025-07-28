@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 
 import {
   GoogleMap as GoolgeMapComponent,
@@ -10,8 +10,8 @@ import { Loader, Loader2 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
-import { Input } from "../ui/input";
-import { Skeleton } from "../ui/skeleton";
+// import { Input } from "@/components/UiComponents/ui/input";
+import { Skeleton } from "@/components/UiComponents/ui/skeleton";
 const containerStyle = {
   width: "100%",
   height: "100%",
@@ -34,7 +34,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
   defaultMarkerPostion,
   className,
 }) => {
-  const t = useTranslations("Index");
+  const t = useTranslation();
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: `${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`,
@@ -47,9 +47,9 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
   const getPlaceCoordinates = () => {
     const geocoder = new google.maps.Geocoder();
     geocoder.geocode(
-      { address: searchInputRef.current.value },
+      { address: (searchInputRef.current as HTMLInputElement)?.value },
       function (results, status) {
-        if (status === "OK") {
+        if (status === "OK" && results) {
           const location = results[0].geometry.location;
           const newPosition = {
             lat: location.lat(),
@@ -76,11 +76,11 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
             onPlaceChanged={getPlaceCoordinates}
             className=" w-full "
           >
-            <Input
+            {/* <Input
               placeholder={"Search location"}
               className="border bg-white md:min-w-[300px]"
               ref={searchInputRef}
-            />
+            /> */}<>jn</>
           </Autocomplete>
         </div>
         <GoolgeMapComponent
@@ -94,13 +94,13 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
           zoom={14}
           center={
             markerPosition
-              ? { lat: markerPosition?.lat, lng: markerPosition?.lng }
+              ? { lat: markerPosition.lat, lng: markerPosition.lng }
               : { lat: 30.9585477, lng: 31.1613696 }
           }
           onClick={(e) => {
             const newPosition = {
-              lat: e.latLng.lat(),
-              lng: e.latLng.lng(),
+              lat: e.latLng?.lat() || 0,
+              lng: e.latLng?.lng() || 0,
             };
             setMarkerPosition(newPosition);
             onMarkerPositionChange(newPosition);
@@ -109,21 +109,17 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
         >
           {/* Child components, such as markers, info windows, etc. */}
           <Marker
-            onClick={() =>
-              router.push(
-                `https://maps.google.com/?q=${markerPosition.lat},${markerPosition.lng}`
-              )
-            }
+            
             draggable
             onDragEnd={(e) => {
               const newPosition = {
-                lat: e.latLng.lat(),
-                lng: e.latLng.lng(),
+                lat: e.latLng?.lat() || 0,
+                lng: e.latLng?.lng() || 0,
               };
               setMarkerPosition(newPosition);
               onMarkerPositionChange(newPosition);
             }}
-            position={markerPosition}
+            position={markerPosition || { lat: 0, lng: 0 }}
           />
         </GoolgeMapComponent>
       </div>

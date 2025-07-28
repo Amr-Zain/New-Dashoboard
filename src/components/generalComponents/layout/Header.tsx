@@ -1,13 +1,11 @@
-//@ts-nocheck
+
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, IRootState, RootState } from "@/store";
+import { AppDispatch, RootState } from "@/store";
 import { useTranslation } from "react-i18next";
-import CalendarIcon from "@/components/generalComponents/atoms/icons/CalendarIcon";
 import { AuthContext } from "@/components/generalComponents/Auth/AuthProvider";
 import { useContext, useEffect, useState } from "react";
 import { useMutate } from "@/hooks/UseMutate";
 import Swal from "sweetalert2";
-import DropDownNotification from "@/components/sharedComponents/uiComponents/Notification";
 import useFetch from "@/hooks/UseFetch";
 import i18next from "i18next";
 import { useIsRTL } from "@/hooks/useIsRTL";
@@ -30,7 +28,7 @@ const Header = () => {
   const { t } = useTranslation();
 
   const isRtl =
-    useSelector((state: IRootState) => state.themeConfig.rtlClass) === "rtl"
+    useSelector((state: RootState) => state.themeConfig.rtlClass) === "rtl"
       ? true
       : false;
 
