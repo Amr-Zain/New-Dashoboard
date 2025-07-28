@@ -26,6 +26,7 @@ import AppSkeleton from "../Loader/AppSkeleton";
 import TiptapEditorWithToolbar from "../form-controls/TiptapEditor";
 import AppSelect from "../form-controls/AppSelect";
 import { AppFormProps, FieldProp } from "@/types/AppFormTypes";
+import AppMap, { GoogleMapProps, Position } from "../form-controls/AppMap";
 
 const AppForm = <T extends object = Record<string, any>>({
   fields,
@@ -223,6 +224,7 @@ const AppForm = <T extends object = Record<string, any>>({
           />
         );
         break;
+   
       default:
         inputElement = null;
     }

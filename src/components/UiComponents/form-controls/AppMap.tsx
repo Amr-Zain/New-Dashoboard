@@ -11,14 +11,14 @@ import useWindowWidth from "@/utils/hooks/useWindowWidth";
 import React, { useRef, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 
-interface Position {
+export interface Position {
   lat: number;
   lng: number;
 }
 
-interface GoogleMapProps {
+export interface GoogleMapProps {
   onMarkerPositionChange?: (position: Position)  => void;
-  defaultMarkerPosition?: Position | null;
+  defaultMarkerPosition?: Position | 0;
   className?: string;
   height?: number;
   locations?: Position[];

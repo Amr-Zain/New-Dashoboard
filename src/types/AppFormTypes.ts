@@ -15,6 +15,7 @@ import type { OTPProps } from 'antd/lib/input/OTP';
 import { MultiLangFieldProps } from "@/components/UiComponents/form-controls/MultiLangField";
 import { AppLoaderProps } from "./ApploaderTypes";
 import { EditorProps } from "@/components/UiComponents/form-controls/TiptapEditor";
+import { GoogleMapProps, Position } from "@/components/UiComponents/form-controls/AppMap";
 
 interface CommenProps {
   name:string;
@@ -28,6 +29,7 @@ interface CommenProps {
   inputProps?: any;
   onchange?: (value: any) => void;
   skeletonClassName?: string;
+   
 }
 interface TextInputProps extends InputProps { }
 interface PasswordInputProps extends PasswordProps { }
@@ -60,7 +62,8 @@ type Field =
   | { type: "date"; inputProps?: DateInputProps; }
   | { type: "checkbox"; inputProps?: CheckboxInputProps; }
   | { type: "rate"; inputProps?: RateInputProps; }
-  | { type: "multiLangField"; inputProps?: MultiLangFieldInputProps; };
+  | { type: "multiLangField"; inputProps?: MultiLangFieldInputProps; }
+  | { type: "map"; inputProps?: GoogleMapProps };
 
 export type FieldProp = Field & CommenProps;
 
@@ -82,4 +85,8 @@ export interface AppFormProps<T extends object = Record<string, any>> {
   fromBtn?: string | React.ReactNode;
   loader?: boolean;
   cancelBtn?: boolean;
+  // lat?: number;
+  // lng?: number;
+    // map: { lat: number; lng: number };
+
 }

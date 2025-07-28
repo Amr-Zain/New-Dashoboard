@@ -57,7 +57,7 @@ const AppSelect: React.FC<AppSelectProps> = ({
       ? fetchedData.data
       : [];
 
-    return rawData.map((item) => ({
+    return rawData.map((item : any) => ({
       label:
         item?.[lang]?.name ??
         item?.name ??
