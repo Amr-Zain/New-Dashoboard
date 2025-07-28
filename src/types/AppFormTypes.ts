@@ -16,7 +16,20 @@ import { MultiLangFieldProps } from "@/components/UiComponents/form-controls/Mul
 import { AppLoaderProps } from "./ApploaderTypes";
 import { EditorProps } from "@/components/UiComponents/form-controls/TiptapEditor";
 import { GoogleMapProps, Position } from "@/components/UiComponents/form-controls/AppMap";
+// export interface Position {
+//   lat: number;
+//   lng: number;
+// }
 
+// export interface GoogleMapProps {
+//   onMarkerPositionChange?: (position: Position) => void;
+//   defaultMarkerPosition?: Position | null;
+//   className?: string;
+//   height?: number;
+//   locations?: Position[];
+//   zoom?: number;
+//   mapContainerStyle?: React.CSSProperties;
+// }
 interface CommenProps {
   name:string;
   label?: string | React.ReactNode;
@@ -63,8 +76,12 @@ type Field =
   | { type: "checkbox"; inputProps?: CheckboxInputProps; }
   | { type: "rate"; inputProps?: RateInputProps; }
   | { type: "multiLangField"; inputProps?: MultiLangFieldInputProps; }
-  | { type: "map"; inputProps?: GoogleMapProps };
-
+| { 
+      type: "map"; 
+      inputProps?: GoogleMapProps;
+      // Add any additional map-specific props you need
+      onPositionChange?: (position: Position) => void;
+    };
 export type FieldProp = Field & CommenProps;
 
 export interface AppFormProps<T extends object = Record<string, any>> {

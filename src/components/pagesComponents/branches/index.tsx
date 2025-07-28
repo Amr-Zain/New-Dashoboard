@@ -9,6 +9,7 @@ import { Form } from "antd";
 import { generateFinalOut, generateInitialValues } from "@/utils/helpers";
 import toast from "react-hot-toast";
 import { useMutate } from "@/hooks/UseMutate";
+import { FieldProp } from "@/types/AppFormTypes";
 
 export default function BranchForm({ fetchData }: { fetchData?: any }) {
   const endpoint = `awards`;
@@ -41,10 +42,10 @@ export default function BranchForm({ fetchData }: { fetchData?: any }) {
     formData: true,
   });
 
-  const fields = [
+  const fields : FieldProp[]  = [
     {
       type: "imgUploader",
-      uploadText: t("form.uploadImageText"),
+      // uploadText: t("form.uploadImageText"),
       name: "image",
       inputProps: {
         model: "sliders",
@@ -70,7 +71,7 @@ export default function BranchForm({ fetchData }: { fetchData?: any }) {
       span: 12,
     },
     {
-      type: "editor",
+      type: "text",
       name: "description_ar",
       label: t("form.desc_ar"),
       placeholder: t("form.namePlaceholder"),
@@ -78,7 +79,7 @@ export default function BranchForm({ fetchData }: { fetchData?: any }) {
       span: 12,
     },
     {
-      type: "editor",
+      type: "text",
       name: "description_en",
       label: t("form.desc_en"),
       placeholder: t("form.namePlaceholder"),

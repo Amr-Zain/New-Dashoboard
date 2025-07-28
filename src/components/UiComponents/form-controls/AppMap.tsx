@@ -17,17 +17,17 @@ export interface Position {
 }
 
 export interface GoogleMapProps {
-  onMarkerPositionChange?: (position: Position)  => void;
-  defaultMarkerPosition?: Position | 0;
   className?: string;
   height?: number;
   locations?: Position[];
+  value?: Position; // Add value prop
+  onChange?: (position: Position) => void; // Add onChange prop
 }
 
 const AppMap: React.FC<GoogleMapProps> = ({
-  defaultMarkerPosition,
   className,
-  onMarkerPositionChange,
+  value, // Destructure value
+  onChange, // Destructure onChange
 }) => {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -36,15 +36,15 @@ const AppMap: React.FC<GoogleMapProps> = ({
   });
 
   const [markerPosition, setMarkerPosition] = useState<Position | null>(
-    defaultMarkerPosition || { lat: 10.2, lng: 10.3 }
+    value || { lat: 10.2, lng: 10.3 } // Use value if provided
   );
 
-  // ✅ عشان تحدث البوزيشن أول ما الداتا توصل
+  // Update internal state when value prop changes
   React.useEffect(() => {
-    if (defaultMarkerPosition) {
-      setMarkerPosition(defaultMarkerPosition);
+    if (value) {
+      setMarkerPosition(value);
     }
-  }, [defaultMarkerPosition]);
+  }, [value]);
 
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -65,7 +65,7 @@ const AppMap: React.FC<GoogleMapProps> = ({
           lng: place.geometry.location.lng(),
         };
         setMarkerPosition(newPosition);
-        onMarkerPositionChange?.(newPosition); 
+        onChange?.(newPosition); 
       }
     }
   };
@@ -107,7 +107,7 @@ const AppMap: React.FC<GoogleMapProps> = ({
             if (lat && lng) {
               const newPosition = { lat, lng };
               setMarkerPosition(newPosition);
-              onMarkerPositionChange?.(newPosition);
+              onChange?.(newPosition);
             }
           }}
         >
