@@ -6,6 +6,6 @@ export const Route = createFileRoute("/_main/branches/add/")({
 });
 
 function RouteComponent() {
-  throw new Error('swsw')
+  // throw new Error('swsw')
   return < BranchForm/>;
 }

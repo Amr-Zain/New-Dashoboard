@@ -22,8 +22,8 @@ const ErrorPage = ({ error }: { error: unknown }) => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white text-center">
-      <div className="flex flex-col items-center justify-center h-screen p-6 text-center bg-white">
+    <div className="min-h-screen flex items-center justify-center bg-body text-center">
+      <div className="flex flex-col items-center justify-center h-screen p-6 text-center bg-body">
         <Lottie
           animationData={serverDownJson}
           loop
@@ -32,10 +32,10 @@ const ErrorPage = ({ error }: { error: unknown }) => {
         <h1 className="text-3xl font-bold mb-4 text-red-600">
           {t("server_error_page.title")}
         </h1>
-        <p className="text-gray-700 mb-6">{message}</p>
+        <p className="text-text mb-6">{message}</p>
         <button
           onClick={() => window.location.replace("/")}
-          className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
+          className="bg-primary text-text px-6 py-2 rounded-md hover:primary/20"
         >
           {t("server_error_page.back_to_home_button")}
         </button>

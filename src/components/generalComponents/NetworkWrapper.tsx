@@ -55,7 +55,7 @@ const NetworkWrapper = ({ children }: { children: React.ReactNode }) => {
 
   if (!isOnline || hasComeBackOnline) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen text-center p-6 bg-white">
+      <div className="flex flex-col items-center justify-center h-screen text-center p-6 bg-body">
         <Lottie animationData={offlineJson} loop className="w-72 h-72 mb-6" />
         <h1 className="text-3xl font-bold mb-4 text-red-600">
         
@@ -63,14 +63,14 @@ const NetworkWrapper = ({ children }: { children: React.ReactNode }) => {
   
         </h1>
 
-        <p className="text-gray-600 mb-4">
+        <p className="text-text mb-4">
 
            {t("connection_error_page.no_internet_message")}
 
         </p>
 
         <button
-          className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition"
+          className="bg-primary text-text px-6 py-2 rounded-md hover:primary/20 transition"
           onClick={() => window.location.reload()}
         >
           {t("connection_error_page.retry_button")}
