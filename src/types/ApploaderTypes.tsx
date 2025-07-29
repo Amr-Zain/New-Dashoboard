@@ -34,4 +34,5 @@ export interface AppLoaderProps<T extends object = Record<string, any>> {
   showPreview?: boolean;
   draggable?: boolean;
   apiEndpoint?: string;
+  uploadText?:string;
 }

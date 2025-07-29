@@ -2,7 +2,6 @@ import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { Toaster } from "react-hot-toast";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
-
 // Tailwind css
 import "./main.scss";
 
@@ -41,7 +40,7 @@ const router = createRouter({
   context: {
     queryClient,
   },
-  defaultErrorComponent: AppError,
+  defaultErrorComponent: ({info})=>AppError,
   defaultNotFoundComponent: NotFound,
   defaultPendingComponent: LoaderPage,
 });

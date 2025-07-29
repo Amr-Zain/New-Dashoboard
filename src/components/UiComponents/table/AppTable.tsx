@@ -1,5 +1,6 @@
-import React, { JSX, useEffect, useState } from "react";
-import { Input, Skeleton, Table, Tabs } from "antd";
+
+import React, { JSX, useState } from "react";
+import { Input, Table, message } from "antd"; 
 import type { TableProps } from "antd";
 import { IoSearch } from "react-icons/io5";
 import { useNavigate } from "@tanstack/react-router";
@@ -7,15 +8,19 @@ import { useTranslation } from "react-i18next";
 import TableFilter from "./TableFilter";
 import { Add, Filter } from "iconsax-reactjs";
 import i18n from "@/i18n";
+
+import type { PaginatedApiResponse } from "@/types/api";
 import useFetch from "@/hooks/UseFetch";
 
 import "@/styles/components/app-table.scss";
 import TableSkeleton from "./TableSkeleton";
+import AppTabs from "@/components/profile/AppTabs";
+import ExtractFile from "./ExtractFile";
 
 interface AppTableProps<T> extends TableProps<T> {
   style?: React.CSSProperties;
-  columns: any;
-  tableData?: any;
+  columns: TableProps<T>["columns"];
+  tableData?: PaginatedApiResponse<T>;
   dataSource?: T[];
   header?: React.ReactNode;
   pagination?: TableProps<T>["pagination"];
@@ -31,8 +36,8 @@ interface AppTableProps<T> extends TableProps<T> {
   hasSearch?: boolean;
   headerModal?: string;
   handleHeaderModal?: () => void;
-  currentSearchParams: Record<string, any>;
-  tabs?: any;
+  currentSearchParams: Record<string, string | undefined>;
+  tabs?: { key: string; label: React.ReactNode }[];
   filterProps?: {
     statusData?: { id: string; name: string }[];
     statusTitle?: string;
@@ -40,6 +45,8 @@ interface AppTableProps<T> extends TableProps<T> {
     FilterByPrice?: boolean;
     statusKey?: string;
   };
+  showExport?: boolean;
+  exportEndPoint?: string;
 }
 
 const AppTable = <T extends Record<string, any>>({
@@ -62,67 +69,75 @@ const AppTable = <T extends Record<string, any>>({
   currentSearchParams,
   tabs,
   filterProps,
+  showExport = false,
+  exportEndPoint,
   ...restProps
 }: AppTableProps<T>): JSX.Element => {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [selectedRows, setSelectedRows] = useState<T[]>([]);
   const navigate = useNavigate();
   const { keyword, status } = currentSearchParams;
-  const page = 1;
-  const initialSearchTerm = keyword || "";
-  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
-  const initialTab = status || tabs?.[0]?.key || "";
-  const [activeTab, setActiveTab] = useState(initialTab);
-  const { t } = useTranslation();
-  const [currentPage, setCurrentPage] = useState(Number(page) || 1);
+  const page = currentSearchParams.page || "1";
 
-  const {
-    data: fetchedData,
-    isLoading,
-  } = useFetch<any>({
+  const [searchTerm, setSearchTerm] = useState(keyword || "");
+  const { t } = useTranslation();
+
+  const { data: fetchedData, isLoading } = useFetch<PaginatedApiResponse<T>>({
     queryKey: [`${endpoint}`],
     endpoint: endpoint || "",
     params: {
-      page: currentPage,
+      page,
       limit: 10,
       keyword: searchTerm,
-      status: activeTab === "all" ? undefined : activeTab,
+      status: status === "all" ? undefined : status,
     },
     onSuccess: (data) => {
       console.log("Fetched data:", data);
     },
     enabled: !!endpoint,
   });
+
   const sourceData = endpoint ? fetchedData : tableData;
-  useEffect(() => {
-    setCurrentPage(Number(page) || 1);
-  }, [page]);
 
   const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-    navigate({ to:".", search: { ...currentSearchParams, page: newPage.toString() } as unknown as true});
+    navigate({
+      to: ".",
+      search: {
+        ...currentSearchParams,
+        page: newPage.toString(),
+      },
+    });
   };
 
-  useEffect(() => {
-    const typeFromParams = status || tabs?.[0]?.key || "";
-    setActiveTab(typeFromParams);
-  }, [status, tabs]);
+  const handleRowSelectionChange = (
+    selectedRowKeys: React.Key[],
+    selectedRows: T[]
+  ) => {
+    setSelectedRows(selectedRows);
+    console.log("Selected Rows:", selectedRows);
+  };
 
   const rowSelection: TableProps<T>["rowSelection"] = showSelection
     ? {
-        onChange: (selectedRowKeys, selectedRows) => {
-          console.log("Selected Rows:", selectedRows);
-        },
+        onChange: handleRowSelectionChange,
+        selectedRowKeys: selectedRows.map((row) => {
+          // Ensure rowKey is correctly extracted for selected rows
+          if (typeof rowKey === "function") {
+            return rowKey(row);
+          }
+          return row[rowKey as keyof T];
+        }) as React.Key[], // Cast to React.Key[]
       }
     : undefined;
 
   const handleBlur = () => {
-    const newSearch = { ...currentSearchParams }; // Use currentSearchParams
+    const newSearch = { ...currentSearchParams };
     if (searchTerm) {
       newSearch.keyword = searchTerm;
     } else {
       delete newSearch.keyword;
     }
-    navigate({ to:'.', search: newSearch });
+    navigate({ to: ".", search: newSearch });
   };
 
   const handleSort = (field: string, order: "ascend" | "descend") => {
@@ -130,20 +145,23 @@ const AppTable = <T extends Record<string, any>>({
     const source = sourceData?.data;
     if (!source) return;
 
-    const sortedData = [...source].sort((a: any, b: any) => {
-      const aValue = a[languageKey]?.[field] || a[field];
-      const bValue = b[languageKey]?.[field] || b[field];
+    const sortedData = [...source].sort((a: T, b: T) => {
+      const aValue = (a as any)[languageKey]?.[field] || a[field];
+      const bValue = (b as any)[languageKey]?.[field] || b[field];
 
-      if (typeof aValue == "string" && typeof bValue == "string") {
+      if (typeof aValue === "string" && typeof bValue === "string") {
         return order === "ascend"
           ? aValue.localeCompare(bValue)
           : bValue.localeCompare(aValue);
       } else {
-        return order === "ascend"
-          ? parseFloat(a[field]) - parseFloat(b[field])
-          : parseFloat(b[field]) - parseFloat(a[field]);
+        const numA = parseFloat(aValue);
+        const numB = parseFloat(bValue);
+        return order === "ascend" ? numA - numB : numB - numA;
       }
     });
+    // If you want client-side sorting to affect the displayed data,
+    // you would need a state variable for `dataSource` and update it here:
+    // setDataSource(sortedData);
   };
 
   return (
@@ -154,20 +172,10 @@ const AppTable = <T extends Record<string, any>>({
         <>
           <div className="table-header">
             {tabs && (
-              <Tabs
-                activeKey={activeTab}
-                onChange={(key) => {
-                  const newSearch = { ...currentSearchParams };
-                  if (key == "all") {
-                    delete newSearch.status;
-                  } else {
-                    newSearch.status = key;
-                  }
-                  navigate({ to: '.', search: newSearch });
-                  setActiveTab(key);
-                }}
-                items={tabs.map(({ key, label }: any) => ({ key, label }))}
-                className="custom-tabs-wrapper app-table-tabs"
+              <AppTabs
+                active={status || tabs?.[0]?.key}
+                tabItems={tabs.map(({ key, label }) => ({ key, label }))}
+                name="status"
               />
             )}
 
@@ -197,6 +205,15 @@ const AppTable = <T extends Record<string, any>>({
               </button>
             )}
 
+            {showExport && (
+              <ExtractFile
+                columns={columns}
+                selectedRows={selectedRows}
+                endpoint={exportEndPoint}
+                currentSearchParams={{}}
+              />
+            )}
+
             {headerModal && (
               <button className="app-btn" onClick={handleHeaderModal}>
                 <Add />
@@ -215,15 +232,23 @@ const AppTable = <T extends Record<string, any>>({
             className={className}
             rowClassName={rowClassName}
             pagination={{
-              current: currentPage,
+              current: +page,
               pageSize: 10,
               total: sourceData?.meta?.total || 0,
               onChange: handlePageChange,
             }}
             {...restProps}
-            onChange={(pagination, filters, sorter: any) => {
-              if (sorter.order && sorter.columnKey) {
-                handleSort(sorter.columnKey, sorter.order);
+            onChange={(pagination, filters, sorter) => {
+              const singleSorter = Array.isArray(sorter) ? sorter[0] : sorter;
+              if (
+                singleSorter &&
+                singleSorter.order &&
+                singleSorter.columnKey
+              ) {
+                handleSort(
+                  singleSorter.columnKey.toString(),
+                  singleSorter.order
+                );
               }
             }}
           />

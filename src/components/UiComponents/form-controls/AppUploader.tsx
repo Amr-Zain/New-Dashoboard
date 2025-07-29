@@ -35,6 +35,7 @@ const AppUploader = <T extends object = Record<string, any>>({
   showPreview = true,
   draggable = true,
   apiEndpoint = "/attachments",
+  
 }: AppLoaderProps<T>) => {
   const [fileList, setFileList] = useState<UploadFile[]>(initialFileList);
   const [previewOpen, setPreviewOpen] = useState(false);

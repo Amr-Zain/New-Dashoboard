@@ -120,6 +120,7 @@ const AppForm = <T extends object = Record<string, any>>({
       case "select":
         inputElement = (
           <Select
+        
             placeholder={field.placeholder || field.name}
             mode={field.multiple ? "multiple" : undefined}
             {...field.inputProps}
