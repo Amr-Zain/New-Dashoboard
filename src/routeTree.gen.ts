@@ -18,8 +18,11 @@ import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as MainProfileRouteImport } from './routes/_main/profile'
 import { Route as MainOwnerIndexRouteImport } from './routes/_main/owner/index'
 import { Route as MainNotificationsIndexRouteImport } from './routes/_main/notifications/index'
+import { Route as MainBranchesIndexRouteImport } from './routes/_main/branches/index'
 import { Route as MainArticlesIndexRouteImport } from './routes/_main/articles/index'
+import { Route as MainBranchesAddIndexRouteImport } from './routes/_main/branches/add.index'
 import { Route as MainArticlesAddIndexRouteImport } from './routes/_main/articles/add/index'
+import { Route as MainBranchesBranchIdEditRouteImport } from './routes/_main/branches/$branchId/edit'
 import { Route as MainArticlesArticalIdEditRouteImport } from './routes/_main/articles/$articalId/edit'
 
 const MainAboutLazyRouteImport = createFileRoute('/_main/about')()
@@ -71,9 +74,19 @@ const MainNotificationsIndexRoute = MainNotificationsIndexRouteImport.update({
   path: '/notifications/',
   getParentRoute: () => MainRouteRoute,
 } as any)
+const MainBranchesIndexRoute = MainBranchesIndexRouteImport.update({
+  id: '/branches/',
+  path: '/branches/',
+  getParentRoute: () => MainRouteRoute,
+} as any)
 const MainArticlesIndexRoute = MainArticlesIndexRouteImport.update({
   id: '/articles/',
   path: '/articles/',
+  getParentRoute: () => MainRouteRoute,
+} as any)
+const MainBranchesAddIndexRoute = MainBranchesAddIndexRouteImport.update({
+  id: '/branches/add/',
+  path: '/branches/add/',
   getParentRoute: () => MainRouteRoute,
 } as any)
 const MainArticlesAddIndexRoute = MainArticlesAddIndexRouteImport.update({
@@ -81,6 +94,12 @@ const MainArticlesAddIndexRoute = MainArticlesAddIndexRouteImport.update({
   path: '/articles/add/',
   getParentRoute: () => MainRouteRoute,
 } as any)
+const MainBranchesBranchIdEditRoute =
+  MainBranchesBranchIdEditRouteImport.update({
+    id: '/branches/$branchId/edit',
+    path: '/branches/$branchId/edit',
+    getParentRoute: () => MainRouteRoute,
+  } as any)
 const MainArticlesArticalIdEditRoute =
   MainArticlesArticalIdEditRouteImport.update({
     id: '/articles/$articalId/edit',
@@ -95,11 +114,14 @@ export interface FileRoutesByFullPath {
   '/about': typeof MainAboutLazyRoute
   '/': typeof MainIndexRoute
   '/articles': typeof MainArticlesIndexRoute
+  '/branches': typeof MainBranchesIndexRoute
   '/notifications': typeof MainNotificationsIndexRoute
   '/owner': typeof MainOwnerIndexRoute
   '/sliders': typeof MainSlidersIndexLazyRoute
   '/articles/$articalId/edit': typeof MainArticlesArticalIdEditRoute
+  '/branches/$branchId/edit': typeof MainBranchesBranchIdEditRoute
   '/articles/add': typeof MainArticlesAddIndexRoute
+  '/branches/add': typeof MainBranchesAddIndexRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRouteRouteWithChildren
@@ -108,11 +130,14 @@ export interface FileRoutesByTo {
   '/about': typeof MainAboutLazyRoute
   '/': typeof MainIndexRoute
   '/articles': typeof MainArticlesIndexRoute
+  '/branches': typeof MainBranchesIndexRoute
   '/notifications': typeof MainNotificationsIndexRoute
   '/owner': typeof MainOwnerIndexRoute
   '/sliders': typeof MainSlidersIndexLazyRoute
   '/articles/$articalId/edit': typeof MainArticlesArticalIdEditRoute
+  '/branches/$branchId/edit': typeof MainBranchesBranchIdEditRoute
   '/articles/add': typeof MainArticlesAddIndexRoute
+  '/branches/add': typeof MainBranchesAddIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -123,11 +148,14 @@ export interface FileRoutesById {
   '/_main/about': typeof MainAboutLazyRoute
   '/_main/': typeof MainIndexRoute
   '/_main/articles/': typeof MainArticlesIndexRoute
+  '/_main/branches/': typeof MainBranchesIndexRoute
   '/_main/notifications/': typeof MainNotificationsIndexRoute
   '/_main/owner/': typeof MainOwnerIndexRoute
   '/_main/sliders/': typeof MainSlidersIndexLazyRoute
   '/_main/articles/$articalId/edit': typeof MainArticlesArticalIdEditRoute
+  '/_main/branches/$branchId/edit': typeof MainBranchesBranchIdEditRoute
   '/_main/articles/add/': typeof MainArticlesAddIndexRoute
+  '/_main/branches/add/': typeof MainBranchesAddIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -138,11 +166,14 @@ export interface FileRouteTypes {
     | '/about'
     | '/'
     | '/articles'
+    | '/branches'
     | '/notifications'
     | '/owner'
     | '/sliders'
     | '/articles/$articalId/edit'
+    | '/branches/$branchId/edit'
     | '/articles/add'
+    | '/branches/add'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
@@ -151,11 +182,14 @@ export interface FileRouteTypes {
     | '/about'
     | '/'
     | '/articles'
+    | '/branches'
     | '/notifications'
     | '/owner'
     | '/sliders'
     | '/articles/$articalId/edit'
+    | '/branches/$branchId/edit'
     | '/articles/add'
+    | '/branches/add'
   id:
     | '__root__'
     | '/_main'
@@ -165,11 +199,14 @@ export interface FileRouteTypes {
     | '/_main/about'
     | '/_main/'
     | '/_main/articles/'
+    | '/_main/branches/'
     | '/_main/notifications/'
     | '/_main/owner/'
     | '/_main/sliders/'
     | '/_main/articles/$articalId/edit'
+    | '/_main/branches/$branchId/edit'
     | '/_main/articles/add/'
+    | '/_main/branches/add/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -242,6 +279,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainNotificationsIndexRouteImport
       parentRoute: typeof MainRouteRoute
     }
+    '/_main/branches/': {
+      id: '/_main/branches/'
+      path: '/branches'
+      fullPath: '/branches'
+      preLoaderRoute: typeof MainBranchesIndexRouteImport
+      parentRoute: typeof MainRouteRoute
+    }
     '/_main/articles/': {
       id: '/_main/articles/'
       path: '/articles'
@@ -249,11 +293,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainArticlesIndexRouteImport
       parentRoute: typeof MainRouteRoute
     }
+    '/_main/branches/add/': {
+      id: '/_main/branches/add/'
+      path: '/branches/add'
+      fullPath: '/branches/add'
+      preLoaderRoute: typeof MainBranchesAddIndexRouteImport
+      parentRoute: typeof MainRouteRoute
+    }
     '/_main/articles/add/': {
       id: '/_main/articles/add/'
       path: '/articles/add'
       fullPath: '/articles/add'
       preLoaderRoute: typeof MainArticlesAddIndexRouteImport
+      parentRoute: typeof MainRouteRoute
+    }
+    '/_main/branches/$branchId/edit': {
+      id: '/_main/branches/$branchId/edit'
+      path: '/branches/$branchId/edit'
+      fullPath: '/branches/$branchId/edit'
+      preLoaderRoute: typeof MainBranchesBranchIdEditRouteImport
       parentRoute: typeof MainRouteRoute
     }
     '/_main/articles/$articalId/edit': {
@@ -271,11 +329,14 @@ interface MainRouteRouteChildren {
   MainAboutLazyRoute: typeof MainAboutLazyRoute
   MainIndexRoute: typeof MainIndexRoute
   MainArticlesIndexRoute: typeof MainArticlesIndexRoute
+  MainBranchesIndexRoute: typeof MainBranchesIndexRoute
   MainNotificationsIndexRoute: typeof MainNotificationsIndexRoute
   MainOwnerIndexRoute: typeof MainOwnerIndexRoute
   MainSlidersIndexLazyRoute: typeof MainSlidersIndexLazyRoute
   MainArticlesArticalIdEditRoute: typeof MainArticlesArticalIdEditRoute
+  MainBranchesBranchIdEditRoute: typeof MainBranchesBranchIdEditRoute
   MainArticlesAddIndexRoute: typeof MainArticlesAddIndexRoute
+  MainBranchesAddIndexRoute: typeof MainBranchesAddIndexRoute
 }
 
 const MainRouteRouteChildren: MainRouteRouteChildren = {
@@ -283,11 +344,14 @@ const MainRouteRouteChildren: MainRouteRouteChildren = {
   MainAboutLazyRoute: MainAboutLazyRoute,
   MainIndexRoute: MainIndexRoute,
   MainArticlesIndexRoute: MainArticlesIndexRoute,
+  MainBranchesIndexRoute: MainBranchesIndexRoute,
   MainNotificationsIndexRoute: MainNotificationsIndexRoute,
   MainOwnerIndexRoute: MainOwnerIndexRoute,
   MainSlidersIndexLazyRoute: MainSlidersIndexLazyRoute,
   MainArticlesArticalIdEditRoute: MainArticlesArticalIdEditRoute,
+  MainBranchesBranchIdEditRoute: MainBranchesBranchIdEditRoute,
   MainArticlesAddIndexRoute: MainArticlesAddIndexRoute,
+  MainBranchesAddIndexRoute: MainBranchesAddIndexRoute,
 }
 
 const MainRouteRouteWithChildren = MainRouteRoute._addFileChildren(

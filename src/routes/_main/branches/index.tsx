@@ -1,9 +1,4 @@
-import {
-  createFileRoute,
-  Link,
-  redirect,
-  Route as RouteType,
-} from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import AppTable from "@/components/UiComponents/table/AppTable";
 import { Edit, Home, Slider, Trash } from "iconsax-reactjs";
@@ -15,35 +10,47 @@ import MainPageWrapper, {
   breadcrumbItem,
 } from "@/components/generalComponents/layout/MainPageWrapper";
 import { RouterContext } from "@/main";
-import useFetch from "@/hooks/UseFetch";
-import { prefetchWithUseFetchConfig } from "@/utils/preFetcher";
-import { useIsRTL } from "@/hooks/useIsRTL";
+import axiosInstance from "@/services/instance";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
-export const Route = createFileRoute("/_main/articles/")({
-  component: Articles,
-  // pendingComponent: LoaderPage,
+export const Route = createFileRoute("/_main/branches/")({
+  component: Branches,
   validateSearch: (search) => {
-    return { page: (search?.page as string) || "1" };
+    return { page: (search.page as string) || "1" };
   },
   loaderDeps: ({ search: { page } }) => ({ page }),
   loader: async ({ context, deps: { page } }) => {
+    const endpoint = `awards?page=${page}`;
     const { queryClient } = context as RouterContext;
-    const endpoint = `articals`;
-    await prefetchWithUseFetchConfig(queryClient, [endpoint], endpoint, {
-      page,
+
+    await queryClient.prefetchQuery({
+      queryKey: [endpoint],
+      queryFn: async () => {
+        const res = await axiosInstance.get(endpoint);
+        if (res.data?.error) {
+          throw new Error(res.data.message);
+        }
+        return res.data;
+      },
     });
+   
   },
 });
-function Articles() {
+function Branches() {
   const currentSearchParams = Route.useSearch();
-  const endpoint = `articals`;
-  const { data } = useFetch({
+  const endpoint = `awards?page=${currentSearchParams.page}`;
+  const { data } = useSuspenseQuery({
     queryKey: [endpoint],
-    endpoint,
-    suspense: true,
-    params: { page: currentSearchParams.page },
+    queryFn: async () => {
+      const res = await axiosInstance.get(endpoint);
+      if (res.data?.error) {
+        throw new Error(res.data.message);
+      }
+      return res.data;
+    },
   });
   const { t } = useTranslation();
+  const [refetchKey, setRefetchKey] = useState(0);
   const router = useNavigate();
 
   const columns = [
@@ -76,11 +83,17 @@ function Articles() {
       render: (_: any, record: any) => {
         return (
           <div className="flex items-center gap-2 justify-center">
-            <Link to="/articles/$articalId/edit" params={{ articalId: record.id }} preload='intent'>
+            <button
+              onClick={() => router({ to: `/branches/${record?.id}/edit` })}
+            >
               {" "}
+              {/* Changed navigation call */}
               <Edit className="size-9 text-green-600 p-2 bg-green-100/80 rounded-full" />
-            </Link>
-            <TableDeleteBtn item={record} endpoint={endpoint} />
+            </button>
+            <TableDeleteBtn
+              item={record}
+              endpoint={endpoint}
+            />
           </div>
         );
       },
@@ -90,15 +103,15 @@ function Articles() {
 
   const breadcrumbItems: breadcrumbItem[] = [
     { label: t("pages.home"), to: "/", icon: <Home /> },
-    { label: t("pages.articles"), icon: <Slider /> },
+    { label: t("pages.branches"), icon: <Slider /> },
   ];
   return (
     <MainPageWrapper breadcrumbItems={breadcrumbItems}>
       <AppTable
         columns={columns}
         tableData={data}
-        headerModal={t("labels.add_slider")}
-        handleHeaderModal={() => router({ to: "/articles/add" })}
+        headerModal={t("labels.add_award")}
+        handleHeaderModal={() => router({ to: "/branches/add" })}
         currentSearchParams={currentSearchParams}
       />
     </MainPageWrapper>

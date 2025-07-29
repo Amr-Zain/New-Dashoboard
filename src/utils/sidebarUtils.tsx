@@ -1,4 +1,5 @@
 import { ArchiveTick, Category, Edit, Profile2User, SliderHorizontal, TableDocument, TruckFast, WalletMoney } from 'iconsax-reactjs';
+import { PinIcon } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaPage4 } from 'react-icons/fa';
@@ -89,6 +90,7 @@ export const sideBarModulesConfig: ModuleConfig_TP[] = [
     },
     {module: 'owner',icon: <Profile2User />, },
     {module: 'articles',icon: <WalletMoney />,items:true },
+    {module: 'branches',icon: <PinIcon />,items:true },
     {module: 'awards',icon: <Category />, },
     {module: 'company-features',icon: <ArchiveTick />, },
     {module: 'features',icon: <WalletMoney />, },
