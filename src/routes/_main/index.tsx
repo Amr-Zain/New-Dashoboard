@@ -42,17 +42,17 @@ function Index() {
   ];
 
   return (
-    <MainPageWrapper loading={isLoading} breadcrumbItems={breadcrumbItems}>
-      <div className=" gap-6 py-10">
-        <div className=" h-full">
-          <div className="relative rounded-lg">
-            <div className=" grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6 mb-6">
-              {statisticsArray.length > 0 ? renderStats(statisticsArray) : null}
+        <MainPageWrapper loading={isLoading} breadcrumbItems={breadcrumbItems}>
+            <div className=" gap-6 py-10">
+                <div className=" h-full">
+                    <div className="relative rounded-lg">
+                        <div className=" grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-6">
+                            {statisticsArray.length > 0 ? renderStats(statisticsArray) : null}
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </MainPageWrapper>
+        </MainPageWrapper>
   );
 }
 
