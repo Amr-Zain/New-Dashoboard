@@ -8,6 +8,7 @@ import StatisticsCard from "@/components/pagesComponents/Statistics/StatisticsCa
 import MainPageWrapper, {
   breadcrumbItem,
 } from "@/components/generalComponents/layout/MainPageWrapper";
+import "@/styles/components/app-form.scss";
 import { Home } from "iconsax-reactjs";
 
 export const Route = createFileRoute("/_main/")({

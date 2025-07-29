@@ -15,11 +15,9 @@ import {
 import PhoneNumber from "../form-controls/PhoneNumber";
 import AppUploader from "../form-controls/AppUploader";
 import { ReactComponent as DateIcon } from "@/assets/icons/dateIcon.svg";
-import AppEditor from "../form-controls/AppEditor";
 import { useTranslation } from "react-i18next";
 
 import "react-phone-input-2/lib/style.css";
-import "@/styles/components/app-form.scss";
 import MultiLangField from "../form-controls/MultiLangField";
 import { cn } from "@/utils/helpers";
 import AppSkeleton from "../Loader/AppSkeleton";

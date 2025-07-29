@@ -1,82 +1,111 @@
-.app-form {
-    input,
-    textarea,
-    .ant-select,
-    .ant-input-password,
-    .ant-picker,
-    .ant-otp-input,
-    .ant-input,
-    .ant-input-outlined{
-        @apply h-[52px] border-[2px] border-primary/10 rounded-xl text-text placeholder:text-text bg-body dark:bg-dark focus:border-primary/10 hover:border-primary/10 ;
-        input[data-autocompleted] {
-            background-color: transparent !important;
-        }
-    }
-    
-    .ant-input-password .ant-input{
-        @apply h-[42px] ;
-    }
 
-    textarea{
-        @apply h-[120px] #{!important};
-    }
+  input,
+  textarea,
+  .ant-select,
+  .ant-input-password,
+  .ant-picker,
+  .ant-otp-input,
+  .ant-input,
+  .ant-input-outlined {
+    @apply h-[52px] w-full rounded-xl border-2 border-primary/10 bg-body text-text placeholder:text-text focus:border-primary/10 hover:border-primary/10 hover:bg-body dark:bg-dark;
 
-    .ant-input,
-    .ant-picker,
-    .ant-input-number,
-    .ant-input-number-affix-wrapper{
-        @apply w-full;
-    }
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: theme("colors.text") !important;
+    box-shadow: 0 0 0 1000px theme("colors.body") inset !important;
+  }
+  // Autofill in dark mode
+//   .dark &:-webkit-autofill {
+//     -webkit-text-fill-color: theme("colors.text") !important;
+//     box-shadow: 0 0 0 1000px theme("colors.dark") inset !important;
+//   }
 
-    label{
-        @apply max-md:text-sm w-full text-text font-semibold #{!important};
-    }
+  // Just in case
+  input[data-autocompleted] {
+    background-color: transparent !important;
+  }
+  
+  }
 
-    .ant-select-multiple{
-        .ant-select-selection-wrap{
-            align-self: center;
-        }
-    } 
+  textarea {
+    @apply h-[120px] !important;
+  }
 
-    .full-modal-btn *{
-        @apply w-full;
-    }
-    .ant-otp{
-        @apply gap-4 ;
-        .ant-otp-input{
-            @apply size-[59px] #{!important};
-        }
-    }
-    
-    .ant-input-number-input{
-        @apply h-full;
-    }
+  .ant-input-password .ant-input {
+    @apply h-[42px];
+  }
 
-    .ant-radio-group{
-        @apply w-full gap-2 flex items-center;
-        .ant-radio-button-wrapper{
-            @apply flex-1 flex items-center justify-center border hover:text-primary min-h-11 rounded-xl border-border before:hidden ;
-            &.ant-radio-button-wrapper-checked{
-                @apply border-primary text-primary #{!important};
-            }
-        }
+  .ant-input-number,
+  .ant-input-number-affix-wrapper,
+  .ant-picker,
+  .ant-input {
+    @apply w-full;
+  }
+
+  label {
+    @apply w-full font-semibold text-text max-md:text-sm !important;
+  }
+
+  .ant-select-multiple .ant-select-selection-wrap {
+    align-self: center;
+  }
+
+  .full-modal-btn * {
+    @apply w-full;
+  }
+
+  .ant-otp {
+    @apply gap-4;
+
+    .ant-otp-input {
+      @apply size-[59px] !important;
     }
-    .name-inputs-wrapper{
-        @apply relative;
-        .btns-wrapper{
-            @apply z-10 flex items-center gap-2 bg-body p-1.5 rounded-t-xl absolute -top-1 end-0;
-            span{
-                @apply px-4 py-1 text-xs font-bold rounded-xl cursor-pointer min-w-10;
-            }
-        }
+  }
+
+  .ant-input-number-input {
+    @apply h-full;
+  }
+
+  .ant-radio-group {
+    @apply flex w-full items-center gap-2;
+
+    .ant-radio-button-wrapper {
+      @apply flex flex-1 items-center justify-center min-h-11 rounded-xl border border-border before:hidden hover:text-primary;
+
+      &.ant-radio-button-wrapper-checked {
+        @apply border-primary text-primary !important;
+      }
     }
-    .ant-upload-list{
-        @apply justify-center;
+  }
+
+  .name-inputs-wrapper {
+    @apply relative;
+
+    .btns-wrapper {
+      @apply absolute -top-1 end-0 z-10 flex items-center gap-2 rounded-t-xl bg-body p-1.5;
+
+      span {
+        @apply min-w-10 cursor-pointer rounded-xl px-4 py-1 text-xs font-bold;
+      }
     }
-    .ant-upload{
-        @apply bg-body text-text border-border rounded-sm #{!important};
-    }
-    .ant-input-password-icon{
-        @apply text-text #{!important};
-    }
+  }
+
+  .ant-upload-list {
+    @apply justify-center;
+  }
+
+  .ant-upload {
+    @apply rounded-sm border-border bg-body text-text !important;
+  }
+
+  .ant-input-password-icon {
+    @apply text-text !important;
+  }
+
+
+:where(.css-dev-only-do-not-override-7t2xvq).ant-input-outlined.ant-input-status-error:not(.ant-input-disabled) {
+  @apply bg-body border border-red-500 border-solid !important;
 }
