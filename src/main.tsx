@@ -32,6 +32,8 @@ import { routeTree } from "./routeTree.gen";
 import LoaderPage from "./components/generalComponents/layout/Loader";
 import NotFound from "@/components/generalComponents/Auth/NotFound";
 import AppError from "./components/generalComponents/ErrorHandle";
+import ErrorPage from "./components/pagesComponents/ErrorPage";
+import NetworkWrapper from "./components/generalComponents/NetworkWrapper";
 export type RouterContext = {
   queryClient: QueryClient;
 };
@@ -40,7 +42,7 @@ const router = createRouter({
   context: {
     queryClient,
   },
-  defaultErrorComponent: ({info})=>AppError,
+  defaultErrorComponent:ErrorPage,
   defaultNotFoundComponent: NotFound,
   defaultPendingComponent: LoaderPage,
 });
@@ -59,7 +61,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <Toaster />
         <GeneralApICaller />
         <ThemeCustomizer />
-        <RouterProvider router={router} />
+        <NetworkWrapper>
+          <RouterProvider router={router} />
+        </NetworkWrapper>
       </Provider>
     </QueryClientProvider>
   </React.StrictMode>

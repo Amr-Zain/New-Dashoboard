@@ -10,11 +10,26 @@ import { CheckboxProps } from 'antd/lib/checkbox';
 import { RateProps } from 'antd/lib/rate';
 import { RadioGroupProps } from 'antd/lib/radio';
 import type { OTPProps } from 'antd/lib/input/OTP';
-import { AppLoaderProps } from "./ApploaderTypes";
-import { PhoneNumberProps } from "@/components/UiComponents/form-controls/PhoneNumber";
-import { EditorProps } from "@/components/UiComponents/form-controls/AppEditor";
+ import { PhoneNumberProps } from "@/components/UiComponents/form-controls/PhoneNumber";
+// import { EditorProps } from "@/components/UiComponents/form-controls/AppEditor";
 import { MultiLangFieldProps } from "@/components/UiComponents/form-controls/MultiLangField";
+import { AppLoaderProps } from "./ApploaderTypes";
+import { EditorProps } from "@/components/UiComponents/form-controls/TiptapEditor";
+import { GoogleMapProps, Position } from "@/components/UiComponents/form-controls/AppMap";
+// export interface Position {
+//   lat: number;
+//   lng: number;
+// }
 
+// export interface GoogleMapProps {
+//   onMarkerPositionChange?: (position: Position) => void;
+//   defaultMarkerPosition?: Position | null;
+//   className?: string;
+//   height?: number;
+//   locations?: Position[];
+//   zoom?: number;
+//   mapContainerStyle?: React.CSSProperties;
+// }
 interface CommenProps {
   name:string;
   label?: string | React.ReactNode;
@@ -27,6 +42,7 @@ interface CommenProps {
   inputProps?: any;
   onchange?: (value: any) => void;
   skeletonClassName?: string;
+   
 }
 interface TextInputProps extends InputProps, Record<string, unknown> {}
 interface PasswordInputProps extends PasswordProps, Record<string, unknown> {}
@@ -59,8 +75,13 @@ type Field =
   | { type: "date"; inputProps?: DateInputProps; }
   | { type: "checkbox"; inputProps?: CheckboxInputProps; }
   | { type: "rate"; inputProps?: RateInputProps; }
-  | { type: "multiLangField"; inputProps?: MultiLangFieldInputProps; };
-
+  | { type: "multiLangField"; inputProps?: MultiLangFieldInputProps; }
+| { 
+      type: "map"; 
+      inputProps?: GoogleMapProps;
+      // Add any additional map-specific props you need
+      onPositionChange?: (position: Position) => void;
+    };
 export type FieldProp = Field & CommenProps;
 
 export interface AppFormProps<T extends object = Record<string, any>> {
@@ -81,4 +102,8 @@ export interface AppFormProps<T extends object = Record<string, any>> {
   fromBtn?: string | React.ReactNode;
   loader?: boolean;
   cancelBtn?: boolean;
+  // lat?: number;
+  // lng?: number;
+    // map: { lat: number; lng: number };
+
 }

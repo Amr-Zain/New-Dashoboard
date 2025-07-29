@@ -1,128 +1,167 @@
-import { createSlice } from '@reduxjs/toolkit';
-import i18next from 'i18next';
-import themeConfig from '../theme.config';
+import { createSlice } from "@reduxjs/toolkit";
+import i18next from "i18next";
+import themeConfig from "../theme.config";
+import { applyCustomColorsToCSS, getCurrentThemeColorsFromCSS } from "@/utils/themeHelpers";
 
-const defaultState = {
-    isDarkMode: false,
-    mainLayout: 'app',
-    theme: 'light',
-    menu: 'vertical',
-    layout: 'full',
-    rtlClass: 'rtl',
-    animation: '',
-    navbar: 'navbar-floating',
-    locale: 'ar',
-    sidebar: false,
-    pageTitle: '',
-    languageList: [
-        { code: 'en', name: 'English' },
-        { code: 'ar', name: 'Arabic' },
-    ],
-    semidark: false,
+// Helpers
+const resetCustomColors = () => {
+  const root = document.documentElement;
+  const vars = [
+    "--TW-primary-color",
+    "--TW-light-primary-color",
+    "--TW-body-color",
+    "--TW-dark-color",
+    "--TW-text-color",
+  ];
+  vars.forEach((v) => root.style.removeProperty(v));
 };
 
+const initialThemeSource = localStorage.getItem("theme") || themeConfig.theme;
+const isSystemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+const actualTheme =
+  initialThemeSource === "system"
+    ? isSystemDark
+      ? "dark"
+      : "light"
+    : initialThemeSource;
+
+// Don't apply custom colors here, just load them into state
+const savedCustomColors = localStorage.getItem("customColors");
+const defaultCustomColors = savedCustomColors
+  ? JSON.parse(savedCustomColors)
+  : getCurrentThemeColorsFromCSS();
+
+// Initial state
 const initialState = {
-    theme: localStorage.getItem('theme') || themeConfig.theme,
-    menu: localStorage.getItem('menu') || themeConfig.menu,
-    layout: localStorage.getItem('layout') || themeConfig.layout,
-    rtlClass: localStorage.getItem('rtlClass') || themeConfig.rtlClass,
-    animation: localStorage.getItem('animation') || themeConfig.animation,
-    navbar: localStorage.getItem('navbar') || themeConfig.navbar,
-    locale: localStorage.getItem('i18nextLng') || themeConfig.locale,
-    isDarkMode: false,
-    sidebar: localStorage.getItem('sidebar') || defaultState.sidebar,
-    semidark: localStorage.getItem('semidark') || themeConfig.semidark,
-    languageList: [
-        { code: 'en', name: 'English' },
-        { code: 'ar', name: 'Arabic' },
-    ],
+  themeSource: initialThemeSource,
+  theme: actualTheme,
+  isDarkMode: actualTheme === "dark",
+  menu: localStorage.getItem("menu") || themeConfig.menu,
+  layout: localStorage.getItem("layout") || themeConfig.layout,
+  rtlClass: localStorage.getItem("rtlClass") || themeConfig.rtlClass,
+  animation: localStorage.getItem("animation") || themeConfig.animation,
+  navbar: localStorage.getItem("navbar") || themeConfig.navbar,
+  locale: localStorage.getItem("i18nextLng") || themeConfig.locale,
+  sidebar: localStorage.getItem("sidebar") === "true",
+  semidark: localStorage.getItem("semidark") === "true",
+  languageList: [
+    { code: "en", name: "English" },
+    { code: "ar", name: "Arabic" },
+  ],
+  customColors: defaultCustomColors,
 };
 
+// Slice
 const themeConfigSlice = createSlice({
-    name: 'auth',
-    initialState: initialState,
-    reducers: {
-        toggleTheme(state, { payload }) {
-            payload = payload || state.theme; // light | dark | system
-            localStorage.setItem('theme', payload);
-            state.theme = payload;
-            if (payload === 'light') {
-                state.isDarkMode = false;
-            } else if (payload === 'dark') {
-                state.isDarkMode = true;
-            } else if (payload === 'system') {
-                if ( window.matchMedia &&  window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    state.isDarkMode = true;
-                } else {
-                    state.isDarkMode = false;
-                }
-            }
+  name: "themeConfig",
+  initialState,
+  reducers: {
+    toggleTheme(state, { payload }) {
+      const themeType =
+        typeof payload === "string" ? payload : payload?.type || state.theme;
+      const customColors = payload?.customColors;
 
-            if (state.isDarkMode) {
-                document.querySelector('body')?.classList.add('dark');
-            } else {
-                document.querySelector('body')?.classList.remove('dark');
-            }
-        },
-        toggleMenu(state, { payload }) {
-            payload = payload || state.menu; // vertical, collapsible-vertical, horizontal
-            state.sidebar = false; // reset sidebar state
-            localStorage.setItem('menu', payload);
-            state.menu = payload;
-        },
-        toggleLayout(state, { payload }) {
-            payload = payload || state.layout; // full, boxed-layout
-            localStorage.setItem('layout', payload);
-            state.layout = payload;
-        },
-        toggleRTL(state, { payload }) {
-            payload = payload || state.rtlClass; // rtl, ltr
-            localStorage.setItem('rtlClass', payload);
-            state.rtlClass = payload;
-            document.querySelector('html')?.setAttribute('dir', state.rtlClass || 'rtl');
-        },
-        toggleAnimation(state, { payload }) {
-            payload = payload || state.animation; // animate__fadeIn, animate__fadeInDown, animate__fadeInUp, animate__fadeInLeft, animate__fadeInRight, animate__slideInDown, animate__slideInLeft, animate__slideInRight, animate__zoomIn
-            payload = payload?.trim();
-            localStorage.setItem('animation', payload);
-            state.animation = payload;
-        },
-        toggleNavbar(state, { payload }) {
-            payload = payload || state.navbar; // navbar-sticky, navbar-floating, navbar-static
-            localStorage.setItem('navbar', payload);
-            state.navbar = payload;
-        },
-        toggleSemidark(state, { payload }) {
-            payload = payload === true || payload === 'true' ? true : false;
-            localStorage.setItem('semidark', payload);
-            state.semidark = payload;
-        },
-        toggleLocale(state, { payload }) {
-            payload = payload || state.locale;
-            i18next.changeLanguage(payload);
-            state.locale = payload;
-        },
-        toggleSidebar(state) {
-            state.sidebar = !state.sidebar;
-        },
+      state.themeSource = themeType;
 
-        setPageTitle(state, { payload }) {
-            document.title = `${payload} | ${i18next.t('sidebar.dashboard')}`;
-        },
+      if (themeType === "light" || themeType === "dark") {
+        state.theme = themeType;
+        state.isDarkMode = themeType === "dark";
+        resetCustomColors();
+        // localStorage.removeItem("customColors");
+      } else if (themeType === "system") {
+        const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        state.theme = isDark ? "dark" : "light";
+        state.isDarkMode = isDark;
+        resetCustomColors();
+        // localStorage.removeItem("customColors");
+      } else if (themeType === "custom") {
+        if (customColors) {
+          state.customColors = customColors;
+          applyCustomColorsToCSS(customColors);
+          localStorage.setItem("customColors", JSON.stringify(customColors));
+          const isDark = customColors.bodyColor.includes("36, 43, 51");
+          state.isDarkMode = isDark;
+          state.theme = isDark ? "dark" : "light";
+        } else {
+          // just apply saved
+          applyCustomColorsToCSS(state.customColors);
+          const isDark = state.customColors.bodyColor.includes("36, 43, 51");
+          state.isDarkMode = isDark;
+          state.theme = isDark ? "dark" : "light";
+        }
+      }
+
+      localStorage.setItem("theme", themeType);
+      document.body.classList.toggle("dark", state.isDarkMode);
     },
+
+    toggleMenu(state, { payload }) {
+      payload = payload || state.menu;
+      state.sidebar = false;
+      localStorage.setItem("menu", payload);
+      state.menu = payload;
+    },
+
+    toggleLayout(state, { payload }) {
+      payload = payload || state.layout;
+      localStorage.setItem("layout", payload);
+      state.layout = payload;
+    },
+
+    toggleRTL(state, { payload }) {
+      payload = payload || state.rtlClass;
+      localStorage.setItem("rtlClass", payload);
+      state.rtlClass = payload;
+      document.querySelector("html")?.setAttribute("dir", payload || "rtl");
+    },
+
+    toggleAnimation(state, { payload }) {
+      payload = payload || state.animation;
+      const clean = payload.trim();
+      localStorage.setItem("animation", clean);
+      state.animation = clean;
+    },
+
+    toggleNavbar(state, { payload }) {
+      payload = payload || state.navbar;
+      localStorage.setItem("navbar", payload);
+      state.navbar = payload;
+    },
+
+    toggleSemidark(state, { payload }) {
+      const val = payload === true || payload === "true";
+      localStorage.setItem("semidark", val.toString());
+      state.semidark = val;
+    },
+
+    toggleLocale(state, { payload }) {
+      payload = payload || state.locale;
+      i18next.changeLanguage(payload);
+      state.locale = payload;
+    },
+
+    toggleSidebar(state) {
+      state.sidebar = !state.sidebar;
+    },
+
+    setPageTitle(state, { payload }) {
+      document.title = `${payload} | ${i18next.t("sidebar.dashboard")}`;
+    },
+  },
 });
 
 export const {
-    toggleTheme,
-    toggleMenu,
-    toggleLayout,
-    toggleRTL,
-    toggleAnimation,
-    toggleNavbar,
-    toggleSemidark,
-    toggleLocale,
-    toggleSidebar,
-    setPageTitle,
+  toggleTheme,
+  toggleMenu,
+  toggleLayout,
+  toggleRTL,
+  toggleAnimation,
+  toggleNavbar,
+  toggleSemidark,
+  toggleLocale,
+  toggleSidebar,
+  setPageTitle,
 } = themeConfigSlice.actions;
 
 export default themeConfigSlice.reducer;

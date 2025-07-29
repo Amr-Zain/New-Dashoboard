@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router"; 
 import MainPageWrapper, {
   breadcrumbItem,
 } from "@/components/generalComponents/layout/MainPageWrapper";
@@ -11,17 +11,16 @@ import toast from "react-hot-toast";
 import { useMutate } from "@/hooks/UseMutate";
 import { FieldProp } from "@/types/AppFormTypes";
 
-export default function ArticaleForm({ fetchData }: { fetchData?: any }) {
-  const endpoint = `articals`;
-  
+export default function BranchForm({ fetchData }: { fetchData?: any }) {
+  const endpoint = `awards`;
   const { t } = useTranslation();
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
   const breadcrumbItems: breadcrumbItem[] = [
     { label: t("pages.home"), to: "/", icon: <Home /> },
-    { label: t("pages.articles"), to: "/articles", icon: <Slider /> },
-    { label: fetchData ? t("actions.edit") : t("actions.add") },
+    { label: t("pages.awards"), to: "/branches", icon: <Slider /> }, 
+    { label: fetchData ? t("actions.edit") : t("actions.add") }, 
   ];
 
   const { mutate, isLoading } = useMutate({
@@ -35,7 +34,7 @@ export default function ArticaleForm({ fetchData }: { fetchData?: any }) {
           name: t("pages.articles"),
         })
       );
-      navigate({ to: "/articles", search: { page: "1" } });
+      navigate({ to: "/branches", search:{page:'1'} });
     },
     onError: (err: any) => {
       toast.error(err?.response?.data?.message);
@@ -43,7 +42,7 @@ export default function ArticaleForm({ fetchData }: { fetchData?: any }) {
     formData: true,
   });
 
-  const fields: FieldProp[] = [
+  const fields : FieldProp[]  = [
     {
       type: "imgUploader",
       // uploadText: t("form.uploadImageText"),
@@ -72,7 +71,7 @@ export default function ArticaleForm({ fetchData }: { fetchData?: any }) {
       span: 12,
     },
     {
-      type: "editor",
+      type: "text",
       name: "description_ar",
       label: t("form.desc_ar"),
       placeholder: t("form.namePlaceholder"),
@@ -80,20 +79,14 @@ export default function ArticaleForm({ fetchData }: { fetchData?: any }) {
       span: 12,
     },
     {
-      type: "editor",
+      type: "text",
       name: "description_en",
       label: t("form.desc_en"),
       placeholder: t("form.namePlaceholder"),
       rules: [{ required: true, message: t("validation.descRequired") }],
       span: 12,
     },
-    {
-      type: "text",
-      name: "link",
-      label: t("form.link"),
-      placeholder: t("form.namePlaceholder"),
-      rules: [{ required: true, message: t("validation.required") }],
-    },
+   
   ];
 
   const handleSubmit = async (values: any) => {
@@ -107,7 +100,7 @@ export default function ArticaleForm({ fetchData }: { fetchData?: any }) {
         form={form}
         initialValues={generateInitialValues(fetchData?.data)}
         fields={fields}
-        loader={isLoading}
+        loader={isLoading} 
         onFinish={handleSubmit}
       />
     </MainPageWrapper>

@@ -1,4 +1,4 @@
-import { createLazyFileRoute, RouteTypes} from "@tanstack/react-router";
+import { RouteTypes, createLazyFileRoute} from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import AppTable from "@/components/UiComponents/table/AppTable";
 import { Edit, Home, Slider } from "iconsax-reactjs";

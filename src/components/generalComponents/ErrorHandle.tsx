@@ -4,111 +4,71 @@ import { useRouter } from "@tanstack/react-router";
 import { isAxiosError } from "axios";
 import { HomeIcon, RefreshCwIcon } from "lucide-react";
 import AppButton from "../UiComponents/buttons/AppButton";
-
+import serverDownJson from "@/assets/icons/animated/Livechatbot.json";
+import offlineJson from "@/assets/icons/animated/NoInternet.json";
 interface ErrorProps {
   error: Error;
   reset?: () => void;
-  title?: string;
-  description?: string;
 }
 
 export default function AppError({
   error,
   reset,
-  title = "Something Went Wrong",
-  description,
 }: ErrorProps) {
   const router = useRouter();
-  const getErrorDetails = () => {
-    let statusCode = 500;
-    let message = error.message;
 
-    if (isAxiosError(error)) {
-      statusCode = error.response?.status || 500;
-      message = error.response?.data?.message || error.message;
-    } else if ("status" in error) {
-      statusCode = (error.status as number) || 500;
-    }
-
-    if (!description) {
-      switch (statusCode) {
-        case 400:
-          return "Your request contains invalid data. Please check and try again.";
-        case 401:
-          return "You need to be authenticated to access this resource.";
-        case 403:
-          return "You don't have permission to access this resource.";
-        case 404:
-          return "The requested resource was not found.";
-        case 500:
-          return "Our servers encountered an unexpected error. Please try again later.";
-        default:
-          return "An unexpected error occurred. Please try again.";
-      }
-    }
-
-    return description;
-  };
-  
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const isOnline = useOnlineStatus();
+  const { t } = useTranslation(); 
+const [message, setMessage] = useState(t("server_error_page.default_error_message"));
 
   useEffect(() => {
-    const updateOnlineStatus = () => setIsOnline(navigator.onLine);
+    const storedMessage = localStorage.getItem("serverErrorMessage");
+    if (storedMessage) {
+      setMessage(storedMessage);
+    }
+  }, [t]);
+    if (!isOnline) {
+      return (
+    <div className="flex flex-col items-center justify-center h-screen text-center p-6 bg-white">
+      <Lottie animationData={offlineJson} loop className="w-72 h-72 mb-6" />
 
-    window.addEventListener("online", updateOnlineStatus);
-    window.addEventListener("offline", updateOnlineStatus);
+      <h1 className="text-3xl font-bold mb-4">
+        {isOnline
+          ? t("connection_error_page.server_error_title")
+          : t("connection_error_page.no_internet_title")}
+      </h1>
 
-    return () => {
-      window.removeEventListener("online", updateOnlineStatus);
-      window.removeEventListener("offline", updateOnlineStatus);
-    };
-  }, []);
-  const errorDetails = getErrorDetails();
+      <p className="text-gray-600 mb-6">
+        {isOnline
+          ? t("connection_error_page.server_error_message")
+          : t("connection_error_page.no_internet_message")}
+      </p>
 
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
-      <div className="max-w-md mx-auto">
-        <h1 className="text-3xl font-bold text-danger mb-2">
-          {isOnline ? title : "Connection Lost"}
-        </h1>
-        <p className="text-lg text-bodyText text-secondary mb-6">
-          {isOnline ? errorDetails : "Please Check your internet connection"}
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          {reset && (
-            <AppButton
-              type="button"
-              onClick={reset}
-              className="btn-outline-primary"
-              icon={<RefreshCwIcon size={16} />}
-            >
-              Try Again
-            </AppButton>
-          )}
-
-          <AppButton
-            type="button"
-            onClick={() => router.navigate({ to: "/" })}
-            className="btn-secondary"
-            icon={<HomeIcon size={16} />}
-          >
-            Return Home
-          </AppButton>
-        </div>
-
-        {process.env.NODE_ENV === "development" && (
-          <div className="mt-8 p-4 bg-body/50 rounded-lg text-left">
-            <h3 className="font-medium mb-2">
-              Error Details (Development Only):
-            </h3>
-            <pre className="text-sm text-danger overflow-auto">
-              {error.stack || error.message}
-            </pre>
-          </div>
-        )}
-      </div>
+      <button
+        className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition"
+        onClick={() => reset?reset():router.invalidate()}
+      >
+        {t("connection_error_page.retry_button")}
+      </button>
     </div>
   );
+    }
+
+  return( <div className="flex flex-col items-center justify-center h-screen p-6 text-center bg-white">
+      <Lottie animationData={serverDownJson} loop className="w-72 h-72 mb-6" />
+      <h1 className="text-3xl font-bold mb-4 text-red-600">
+        {t("server_error_page.title")}
+      </h1>
+      <p className="text-gray-700 mb-6">{message}</p>
+      <button
+        onClick={() => window.location.replace('/')}
+        className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
+      >
+        {t("server_error_page.back_to_home_button")}
+      </button>
+    </div>)
 }
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";import Lottie from "lottie-react";
+import { useTranslation } from "react-i18next";
+import { useOnlineStatus } from "@/hooks/useOnlineStatus";
+

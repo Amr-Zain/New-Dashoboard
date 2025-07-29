@@ -112,7 +112,7 @@ const StatisticsCard: React.FC<StatisticsCardProps> = ({
             
             <div className="flex flex-col items-end gap-3">
                 <div className="flex items-center gap-1.5">
-                    <div className="flex flex-col items-end">
+                    <div className="flex flex-col items-center justify-between">
                         <span className="text-sm font-medium text-text whitespace-nowrap">
                             {title}
                         </span>

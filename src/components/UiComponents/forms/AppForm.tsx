@@ -13,15 +13,16 @@ import {
 import PhoneNumber from "../form-controls/PhoneNumber";
 import AppUploader from "../form-controls/AppUploader";
 import { ReactComponent as DateIcon } from "@/assets/icons/dateIcon.svg";
-import AppEditor from "../form-controls/AppEditor";
 import { useTranslation } from "react-i18next";
 
 import "react-phone-input-2/lib/style.css";
-import "@/styles/components/app-form.scss";
 import MultiLangField from "../form-controls/MultiLangField";
 import { cn } from "@/utils/helpers";
 import AppSkeleton from "../Loader/AppSkeleton";
+import TiptapEditorWithToolbar from "../form-controls/TiptapEditor";
+import AppSelect from "../form-controls/AppSelect";
 import { AppFormProps, FieldProp } from "@/types/AppFormTypes";
+import AppMap, { Position } from "../form-controls/AppMap";
 
 const AppForm = <T extends object = Record<string, any>>({
   fields,
@@ -117,20 +118,17 @@ const AppForm = <T extends object = Record<string, any>>({
           <Rate style={{ fontSize: "40px" }} {...field.inputProps} />
         );
         break;
-      case "select":
+     case "select":
         inputElement = (
           <Select
         
             placeholder={field.placeholder || field.name}
             mode={field.multiple ? "multiple" : undefined}
+            options={field.options}
+            endpoint={field.inputProps?.endpoint}
+            inputProps={field.inputProps}
             {...field.inputProps}
-          >
-            {field.options?.map((option) => (
-              <Select.Option key={String(option.value)} value={option.value}>
-                {option.label}
-              </Select.Option>
-            ))}
-          </Select>
+          />
         );
         break;
       case "radio":
@@ -203,9 +201,10 @@ const AppForm = <T extends object = Record<string, any>>({
         break;
       case "editor":
         inputElement = (
-          <AppEditor
+          <TiptapEditorWithToolbar
             form={form}
-            name={field.name}
+            placeholder={field.placeholder}
+            name={field.name!}
             {...field.inputProps}
           />
         );
@@ -221,6 +220,9 @@ const AppForm = <T extends object = Record<string, any>>({
             placeholder={field.placeholder}
           />
         );
+        break;
+      case "map":
+        inputElement = <AppMap />;
         break;
       default:
         inputElement = null;
