@@ -47,9 +47,9 @@ const HighlightColorPicker = ({ onSelect }: Props) => {
       }
       trigger="click"
     >
-      <button type="button">
+      <div className="button">
         <Highlighter size={18} />
-      </button>
+      </div>
     </Popover>
   );
 };

@@ -22,7 +22,6 @@ import DOMPurify from "dompurify";
 import { AlignJustify, ImagePlus } from "lucide-react";
 import Image from "@tiptap/extension-image";
 
-
 import {
   Bold,
   Italic,
@@ -122,7 +121,6 @@ const TiptapEditorWithToolbar = ({ name, form }: EditorProps) => {
     { icon: <AlignLeft size={18} />, action: () => editor.chain().focus().setTextAlign("left").run() },
     { icon: <AlignCenter size={18} />, action: () => editor.chain().focus().setTextAlign("center").run() },
     { icon: <AlignRight size={18} />, action: () => editor.chain().focus().setTextAlign("right").run() },
-    //   { icon: <AlignRight size={18} />, action: () => editor.chain().focus().setTextAlign("justify").run() },
     { icon: <AlignJustify size={18} />, action: () => editor.chain().focus().setTextAlign("justify").run() },
     { icon:<HighlightColorPicker
   onSelect={(color) => {
@@ -159,8 +157,7 @@ const TiptapEditorWithToolbar = ({ name, form }: EditorProps) => {
         <Select
           defaultValue="1"
           onChange={(value) =>
-            editor.chain().focus().toggleHeading({ level: Number(value) as 1 | 2 | 3 | 4 | 5 | 6 })
-.run()
+            editor.chain().focus().toggleHeading({ level: Number(value) as 1 | 2 | 3 | 4 | 5 | 6 }).run()
           }
           style={{ width: 80, marginLeft: "8px" }}
         >
