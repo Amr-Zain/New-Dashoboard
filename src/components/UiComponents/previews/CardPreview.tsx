@@ -1,7 +1,6 @@
 import { Eye } from "iconsax-reactjs";
 import { File, FileText, Image as ImageIcon, Loader2, Video, X } from "lucide-react";
 import { formatFileSize } from "@/utils/helpers";
-import { Image } from "antd";
 import ImageWithFallback from "../ImageWithFallback";
 import { UploadFile } from "@/types/ApploaderTypes";
 

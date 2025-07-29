@@ -6,7 +6,7 @@ import { toggleTheme } from '@/store/themeConfigSlice';
 import { RootState } from '@/store';
 import LighThemeIcon from '@/assets/icons/LighThemeIcon';
 import DarkThemeIcon from '@/assets/icons/DarkThemeIcon';
-import { Monitor, PathTool2 } from 'iconsax-reactjs';
+import { Monitor } from 'iconsax-reactjs';
 
 
 

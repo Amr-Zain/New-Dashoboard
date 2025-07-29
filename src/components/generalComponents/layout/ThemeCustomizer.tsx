@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Button, Drawer, Modal, ColorPicker, Space } from "antd";
+import { useEffect, useState } from "react";
+import { ColorPicker, Space } from "antd";
 import { Lamp, Monitor, Moon, PathTool2, Setting2 } from "iconsax-reactjs";
 import { useTranslation } from "react-i18next";
 import AppDrawer from "@/components/UiComponents/drawers/AppDrawer";
 import AppModal from "@/components/UiComponents/Modal/AppModal";
 import { useDispatch } from "react-redux";
 import { toggleTheme } from "@/store/themeConfigSlice";
-import AppForm from "@/components/UiComponents/forms/AppForm";
 
 const ThemeCustomize = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);

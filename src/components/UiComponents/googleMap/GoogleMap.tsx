@@ -6,8 +6,7 @@ import {
   useJsApiLoader,
   Autocomplete,
 } from "@react-google-maps/api";
-import { Loader, Loader2 } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 // import { Input } from "@/components/UiComponents/ui/input";

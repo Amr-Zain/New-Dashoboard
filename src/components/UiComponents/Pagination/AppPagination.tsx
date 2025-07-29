@@ -7,19 +7,16 @@ interface AppPagination {
     total:number;
     per_page:number;
   };
-  path: any
+  currentPage: string;
 }
 
-const AppPagination = ({ initialData, path }:AppPagination) => {
+const AppPagination = ({ initialData, currentPage }:AppPagination) => {
   const navigate = useNavigate();
-  const currentSearchParams = useSearch({from: path }); 
-
-  const currentPage = currentSearchParams.page ? +currentSearchParams.page : 1;
   const totalItems = initialData?.total;
   const pageSize = initialData?.per_page;
 
   const handlePageChange = (page:number) => { 
-    navigate({ search: { ...currentSearchParams, page: page.toString() } });
+    navigate({ search: (search)=>({ ...search, page: page.toString() }),to:'.' });
   };
 
   return (

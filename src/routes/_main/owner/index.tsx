@@ -45,10 +45,10 @@ function Owner() {
   const fields: FieldProp[] = [
     {
       type: "imgUploader",
-      // uploadText: t("form.uploadImageText"),
       name: "image",
       inputProps: {
         model: "owner",
+        uploadText: t("form.uploadImageText"),
         initialFileList: data ? [{ url: data?.data?.image }] : [],
         maxCount: 1,
       },

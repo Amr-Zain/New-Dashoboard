@@ -11,11 +11,10 @@ interface AppDraggerProps {
   uploadText?: string;
   type?: "image" | "file" | "both";
   multiple?: boolean;
-  isSingle?: boolean;
   maxCount?: number;
 }
 
-const AppDragger: React.FC<AppDraggerProps> = ({ uploadText, type = "both", multiple = true, maxCount, isSingle }) => {
+const AppDragger: React.FC<AppDraggerProps> = ({ uploadText, type = "both", multiple = true, maxCount }) => {
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [fileName, setFileName] = useState("");
@@ -67,7 +66,7 @@ const AppDragger: React.FC<AppDraggerProps> = ({ uploadText, type = "both", mult
 
   return (
     <>
-      {isSingle && (fileUploaded ) ? (
+      {!multiple && (fileUploaded ) ? (
         <div className="p-4 bg-body/50 rounded-xl">
             <div className="flex items-center justify-between my-3 gap-4">
                 <p className="text-sm text-gray-600">{fileName}</p>

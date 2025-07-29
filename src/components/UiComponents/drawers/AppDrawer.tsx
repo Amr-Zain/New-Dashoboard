@@ -27,7 +27,7 @@ const AppDrawer = ({
   return (
     <Drawer
       closable
-      destroyOnClose
+      destroyOnHidden
       title={title}
       placement={placement}
       open={open}

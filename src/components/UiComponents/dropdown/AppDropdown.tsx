@@ -4,15 +4,13 @@ import { Dropdown, DropdownProps } from 'antd';
 import "@/styles/components/dropdown.scss"
 
 interface AppDropdownProps extends DropdownProps {
-  children: React.ReactNode;
+  children: React.ReactElement; 
 }
 
 const AppDropdown: React.FC<AppDropdownProps> = ({ children, ...rest }) => {
   return (
     <Dropdown {...rest}>
-      {React.isValidElement(children)
-        ? React.cloneElement(children as React.ReactElement)
-        : <span>{children}</span>}
+      {children}
     </Dropdown>
   );
 };

@@ -93,7 +93,7 @@ export default function ProfileForm() {
       form={form}
       /* initialValues={generateInitialValues(fetchData?.data)}
        */ fields={fields}
-      loader={isLoading} // Loader prop simplified as id is no longer used for conditional loading
+      loader={isLoading} 
       onFinish={handleSubmit}
       cancelBtn
     />

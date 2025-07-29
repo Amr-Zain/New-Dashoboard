@@ -4,7 +4,7 @@ import { Link, useLocation } from "@tanstack/react-router";
 
 type Props = {
   to: string; 
-  className?: any;
+  className?: string;
   onClick?: () => void;
 };
 

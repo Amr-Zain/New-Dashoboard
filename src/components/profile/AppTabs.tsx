@@ -5,16 +5,18 @@ import { useNavigate } from "@tanstack/react-router";
 export default function AppTabs({
   tabItems,
   active,
+  name,
 }: {
   tabItems: TabsProps["items"];
   active: string;
+  name?:string
 }) {
   const navigate = useNavigate();
 
   const onTabChange = (key: string) => {
     navigate({
       to:'.',
-      search: (prev) => ({...prev,  tab:key }),
+      search: (prev) => ({...prev, [name||'tab']:key }),
     });
   };
 

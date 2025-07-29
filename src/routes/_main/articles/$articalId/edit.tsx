@@ -5,6 +5,7 @@ import axiosInstance from "@/services/instance";
 import { RouterContext } from "@/main";
 import useFetch from "@/hooks/UseFetch";
 import { prefetchWithUseFetchConfig } from "@/utils/preFetcher";
+import { Suspense } from "react";
 
 export const Route = createFileRoute("/_main/articles/$articalId/edit")({
   component: RouteComponent,
@@ -26,5 +27,7 @@ function RouteComponent() {
     endpoint,
     suspense: true,
   });
-  return <ArticaleForm fetchData={data} />;
+  return (
+      <ArticaleForm fetchData={data} />
+  );
 }

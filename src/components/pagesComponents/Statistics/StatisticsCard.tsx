@@ -1,8 +1,5 @@
 import React from 'react';
 import ReactECharts from 'echarts-for-react';
-import { Chart } from 'iconsax-reactjs';
-
-// Props type definition
 interface StatisticsCardProps {
     title: string;
     count: number;
