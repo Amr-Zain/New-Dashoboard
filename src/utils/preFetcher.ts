@@ -10,7 +10,7 @@ export async function prefetchWithUseFetchConfig(
     queryKey: QueryKey, // Match the useFetch queryKey parameter
     endpoint: string,
     params: Record<string, any> = {},
-    general: boolean = false
+    general: boolean = false,
 ) {
     const paginationParams = {
         page: params?.page || 1,

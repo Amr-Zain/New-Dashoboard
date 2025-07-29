@@ -66,6 +66,7 @@ function useFetch<TData = unknown, TError = unknown>({
       
       return res.data;
     } catch (err: any) {
+      // throw err;
       if (originalOnError) {
         originalOnError(err);
       }

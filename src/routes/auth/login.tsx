@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useMutate } from "@/hooks/UseMutate";
 import { deleteAuthedUserData, setAuthedUserData } from "@/store/profile";
-import { useNavigate } from "@tanstack/react-router"; // Changed import
+import { useNavigate } from "@tanstack/react-router";
 import ThemeSwitch from "@/components/UiComponents/buttons/ThemeSwitch";
 import ImageWithFallback from "@/components/UiComponents/ImageWithFallback";
 import { FieldProp } from "@/types/AppFormTypes";
@@ -20,13 +20,12 @@ export const Route = createFileRoute("/auth/login")({
   component: Login,
 });
 
-
 function Login() {
   const [form] = Form.useForm();
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const rtl = useIsRTL();
-  const router = useNavigate(); 
+  const router = useNavigate();
 
   const fields: FieldProp[] = [
     {
@@ -55,9 +54,9 @@ function Login() {
     endpoint: `login`,
     onSuccess: async (response: any) => {
       const { data } = response;
-      dispatch(setAuthedUserData(data?.data));
+      dispatch(setAuthedUserData(data));
       toast.success(t("loginSuccessfully"));
-      router({ to: "/" }); 
+      router({ to: "/" });
     },
     onError: (err: any) => {
       if (err.response && err.response.status === 401) {

@@ -15,13 +15,8 @@
   &:-webkit-autofill:active {
     transition: background-color 5000s ease-in-out 0s;
     -webkit-text-fill-color: theme("colors.text") !important;
-    box-shadow: 0 0 0 1000px theme("colors.body") inset !important;
+    background-color: theme("colors.body") !important;
   }
-  // Autofill in dark mode
-//   .dark &:-webkit-autofill {
-//     -webkit-text-fill-color: theme("colors.text") !important;
-//     box-shadow: 0 0 0 1000px theme("colors.dark") inset !important;
-//   }
 
   // Just in case
   input[data-autocompleted] {

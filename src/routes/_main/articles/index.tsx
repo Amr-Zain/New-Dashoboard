@@ -36,7 +36,7 @@ export const Route = createFileRoute("/_main/articles/")({
 });
 function Articles() {
   const currentSearchParams = Route.useSearch();
-  const endpoint = `articals`;
+  const endpoint = `articalسسسسs`;
   const { data } = useFetch({
     queryKey: [endpoint],
     endpoint,

@@ -13,6 +13,7 @@ import { FieldProp } from "@/types/AppFormTypes";
 
 export default function ArticaleForm({ fetchData }: { fetchData?: any }) {
   const endpoint = `articals`;
+  
   const { t } = useTranslation();
   const [form] = Form.useForm();
   const navigate = useNavigate();
