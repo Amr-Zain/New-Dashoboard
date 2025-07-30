@@ -12,7 +12,7 @@ import { SearchNormal1 } from "iconsax-reactjs";
 // import RecordingAnimation from "@/assets/ui-Icons/recording.json"
 
 const SearchComponent = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedTerm, setDebouncedTerm] = useState("");
@@ -29,7 +29,9 @@ const SearchComponent = () => {
 
   // Load history once on mount
   useEffect(() => {
-    const storedHistory = JSON.parse(localStorage.getItem("searchHistory") || "[]");
+    const storedHistory = JSON.parse(
+      localStorage.getItem("searchHistory") || "[]"
+    );
     setSearchHistory(storedHistory);
   }, []);
 
@@ -62,25 +64,31 @@ const SearchComponent = () => {
   }, [searchTerm]);
 
   // Your existing search API call wrapped for re-use
-  const fetchSearchResults = React.useCallback(async (keyword: string) => {
-    setOpen(true);
-    if (!keyword) return;
-    try {
-      setLoading(true);
-      const data = null;
-      if (data) {
-        setProducts(data);
-        // Update and persist history (limit to 5)
-        const updatedHistory = [keyword, ...searchHistory.filter((item) => item !== keyword)].slice(0, 5);
-        setSearchHistory(updatedHistory);
-        localStorage.setItem("searchHistory", JSON.stringify(updatedHistory));
+  const fetchSearchResults = React.useCallback(
+    async (keyword: string) => {
+      setOpen(true);
+      if (!keyword) return;
+      try {
+        setLoading(true);
+        const data = null;
+        if (data) {
+          setProducts(data);
+          // Update and persist history (limit to 5)
+          const updatedHistory = [
+            keyword,
+            ...searchHistory.filter((item) => item !== keyword),
+          ].slice(0, 5);
+          setSearchHistory(updatedHistory);
+          localStorage.setItem("searchHistory", JSON.stringify(updatedHistory));
+        }
+      } catch (error: any) {
+        toast.error(error?.response?.data?.message || "Search failed");
+      } finally {
+        setLoading(false);
       }
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message || "Search failed");
-    } finally {
-      setLoading(false);
-    }
-  }, [searchHistory]);
+    },
+    [searchHistory]
+  );
 
   // Perform search whenever debounced term changes
   useEffect(() => {
@@ -112,7 +120,6 @@ const SearchComponent = () => {
     setSearchTerm("");
     setProducts(null);
   };
-
 
   const items: MenuProps["items"] = loading
     ? [
@@ -163,7 +170,10 @@ const SearchComponent = () => {
           label: (
             <div className="flex justify-between items-center mb-5">
               <span className="font-bold ">{t("LABELS.search_history")}</span>
-              <span onClick={handleClearAll} className="text-[#C21D20] text-sm cursor-pointer">
+              <span
+                onClick={handleClearAll}
+                className="text-[#C21D20] text-sm cursor-pointer"
+              >
                 {t("LABELS.clear_all")}
               </span>
             </div>
@@ -195,14 +205,21 @@ const SearchComponent = () => {
       ]
     : [
         {
-          label: <span className="text-text py-2 block">{t("labels.no_history")}</span>,
+          label: (
+            <span className="text-text py-2 block">
+              {t("labels.no_history")}
+            </span>
+          ),
           key: "empty",
           disabled: true,
         },
       ];
 
   return (
-    <div className=" search-container relative hidden lg:block" ref={containerRef}>
+    <div
+      className=" search-container relative hidden lg:block"
+      ref={containerRef}
+    >
       <div className="relative lg:me-4 ">
         <Dropdown
           trigger={["click"]}
@@ -227,7 +244,9 @@ const SearchComponent = () => {
               />
             }
             // suffix={<div className="z-10 cursor-pointer bg-secColor rounded-full p-1.5">{isRecording ? <Lottie onClick={stopRecording} className="size-8" animationData={RecordingAnimation} /> : <MicIcon onClick={handleVoiceSearch} className="size-6"/>}</div>}
-            onKeyDown={(e) => e.key === "Enter" && fetchSearchResults(searchTerm.trim())}
+            onKeyDown={(e) =>
+              e.key === "Enter" && fetchSearchResults(searchTerm.trim())
+            }
             className="min-w-[280px] flex-1 font-bold min-h-[42px] border-border !bg-body !text-text *:placeholder:!text-text"
             placeholder={t("labels.searchOn")}
           />

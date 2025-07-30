@@ -42,7 +42,7 @@ const router = createRouter({
   context: {
     queryClient,
   },
-  defaultErrorComponent:ErrorPage,
+  defaultErrorComponent: ErrorPage,
   defaultNotFoundComponent: NotFound,
   defaultPendingComponent: LoaderPage,
 });

@@ -210,7 +210,7 @@ const AppTable = <T extends Record<string, any>>({
                 columns={columns}
                 selectedRows={selectedRows}
                 endpoint={exportEndPoint}
-                currentSearchParams={{}}
+                currentSearchParams={currentSearchParams}
               />
             )}
 

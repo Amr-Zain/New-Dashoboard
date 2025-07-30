@@ -1,122 +1,125 @@
-.app-table-container{
-    @apply rounded-e-none ;
-    .table-header {
-        @apply flex items-center lg:justify-end gap-5 mb-6 flex-wrap;
-        h3{
-            @apply text-xl md:text-3xl font-bold text-text me-auto;
-        }
-        .ant-tabs{
-            @apply max-w-full;
-        }
+.app-table-container {
+  @apply rounded-e-none overflow-x-auto  #{!important};
+  .table-header {
+    @apply flex items-center lg:justify-end gap-5 mb-6 flex-wrap;
+    h3 {
+      @apply text-xl md:text-3xl font-bold text-text me-auto;
     }
+    .ant-tabs {
+      @apply max-w-full;
+    }
+  }
+  .ant-table-container {
+    @apply overflow-x-auto p-2;
+  }
+  .ant-table-content {
+    @apply p-6 bg-white dark:bg-dark rounded-[35px] shadow-box border border-primary/20 min-w-fit;
+  }
+  td,
+  th {
+    @apply text-text text-sm font-medium whitespace-nowrap;
+  }
+  .ant-table-thead {
+    th {
+      @apply text-text py-6 overflow-hidden before:hidden  border-b-border #{!important};
+    }
+  }
+  .ant-table-tbody {
+    tr:last-of-type td {
+      @apply border-b-0;
+    }
+    .ant-table-cell {
+      @apply border-border;
+      &.ant-table-cell-row-hover,
+      &.ant-table-column-sort {
+        @apply bg-dark text-text border-border #{!important};
+      }
+    }
+  }
+  .ant-tag {
+    @apply px-2.5 py-1.5 rounded-[48px] text-xs font-semibold border-none;
+    &.ant-tag-purple {
+      @apply bg-primary/50 text-primary;
+    }
+    &.ant-tag-has-color {
+      // @apply bg-gray-100 text-gray-700 ;
+    }
+    &.ant-tag-gold {
+      @apply bg-[#FBF7EA] text-[#DAB12B];
+    }
+    &.ant-tag-green {
+      @apply bg-green-500 text-success;
+    }
+  }
 
-    .ant-table-content{
-        @apply p-6 bg-white dark:bg-dark rounded-[35px] shadow-box border border-primary/20 min-w-fit;
+  .app-table-tabs {
+    @apply me-auto;
+    .ant-tabs-nav {
+      @apply m-0;
     }
-    td,th{
-        @apply text-text text-sm font-medium whitespace-nowrap;
+    .ant-tabs-nav-list {
+      @apply gap-0 pb-4 overflow-x-auto;
+      .ant-tabs-tab {
+        @apply min-w-fit px-6 border-none #{!important};
+        &.ant-tabs-tab-active {
+          @apply bg-primary/50 #{!important};
+        }
+      }
     }
-    .ant-table-thead{
-        th{
-            @apply text-text py-6 overflow-hidden before:hidden  border-b-border #{!important};
-        }
-    }
-    .ant-table-tbody {
-        tr:last-of-type td{
-            @apply border-b-0;
-        }
-        .ant-table-cell{
-            @apply border-border ;
-            &.ant-table-cell-row-hover,
-            &.ant-table-column-sort{
-                @apply bg-dark text-text border-border #{!important}
-            }
-        }
-    }
-    .ant-tag{
-        @apply px-2.5 py-1.5 rounded-[48px] text-xs font-semibold border-none ;
-        &.ant-tag-purple{
-            @apply bg-primary/50 text-primary ;
-        }
-        &.ant-tag-has-color{
-            // @apply bg-gray-100 text-gray-700 ;
-        }
-        &.ant-tag-gold{
-            @apply bg-[#FBF7EA] text-[#DAB12B] ;
-        }
-        &.ant-tag-green{
-            @apply bg-green-500 text-success ;
-        }
-    }
+  }
 
-    .app-table-tabs{
-        @apply me-auto ;
-        .ant-tabs-nav{
-            @apply m-0 ;
-        }
-        .ant-tabs-nav-list{
-            @apply gap-0 pb-4 overflow-x-auto;
-            .ant-tabs-tab {
-                @apply min-w-fit px-6 border-none #{!important};
-                &.ant-tabs-tab-active{
-                    @apply bg-primary/50 #{!important};
-                }
-            }
-        } 
-    }
+  .ant-pagination {
+    @apply rtl:flex-row-reverse;
+  }
 
-    .ant-pagination{
-        @apply rtl:flex-row-reverse ;
-    }
+  .ant-pagination-options {
+    @apply ltr:ms-auto rtl:me-auto;
+  }
 
-    .ant-pagination-options{
-        @apply ltr:ms-auto rtl:me-auto;
+  .ant-pagination-item,
+  .ant-pagination-prev .ant-pagination-item-link,
+  .ant-pagination-next .ant-pagination-item-link {
+    @apply border border-border rounded-lg  font-bold #{!important};
+    a {
+      @apply text-text;
     }
+  }
 
-    .ant-pagination-item,
-    .ant-pagination-prev .ant-pagination-item-link,
-    .ant-pagination-next .ant-pagination-item-link{
-        @apply border border-border rounded-lg  font-bold #{!important};
-        a{
-            @apply text-text;
-        }
-    }
-    
-    .ant-pagination-next{
-        @apply rtl:me-2;
-    }
+  .ant-pagination-next {
+    @apply rtl:me-2;
+  }
 
-    .ant-pagination-item-active{
-        @apply bg-primary border-primary #{!important};
-        a{
-            @apply text-white #{!important}; 
-        }
+  .ant-pagination-item-active {
+    @apply bg-primary border-primary #{!important};
+    a {
+      @apply text-white #{!important};
     }
-    .anticon-star{
-        @apply text-green-500;
+  }
+  .anticon-star {
+    @apply text-green-500;
+  }
+  .ant-table-wrapper {
+    @apply overflow-x-auto;
+    .ant-table-column-sorter,
+    .anticon {
+      @apply text-text hover:text-text #{!important};
     }
-    .ant-table-wrapper{
-        @apply overflow-x-auto  ;
-        .ant-table-column-sorter,
-        .anticon{
-            @apply text-text hover:text-text #{!important};
-        }
+  }
+  .ant-table-placeholder {
+    @apply bg-body #{!important};
+    .ant-empty-description {
+      @apply text-text;
     }
-    .ant-table-placeholder{
-        @apply bg-body #{!important};
-        .ant-empty-description{
-            @apply text-text;
-        }
-        .ant-table-cell{
-            @apply rounded-b-[24px] border-t-0 border border-border border-double #{!important};
-        }
+    .ant-table-cell {
+      @apply rounded-b-[24px] border-t-0 border border-border border-double #{!important};
     }
+  }
 
-    .ant-table-thead >tr>th,
-    .ant-table-thead >tr>td{
-        background: transparent  !important; 
-    }
-    .ant-table{
-        @apply bg-transparent;
-    }
+  .ant-table-thead > tr > th,
+  .ant-table-thead > tr > td {
+    background: transparent !important;
+  }
+  .ant-table {
+    @apply bg-transparent;
+  }
 }

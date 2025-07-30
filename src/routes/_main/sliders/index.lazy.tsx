@@ -14,6 +14,7 @@ import MainPageWrapper, {
   breadcrumbItem,
 } from "@/components/generalComponents/layout/MainPageWrapper";
 import { FieldProp } from "@/types/AppFormTypes";
+import { TableProps } from "antd";
 
 export const Route = createLazyFileRoute("/_main/sliders/")({
   component: Sliders,
@@ -26,7 +27,7 @@ export default function Sliders() {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [form] = useForm();
 
-  const columns = [
+  const columns: TableProps<any>["columns"] = [
     {
       title: "#",
       dataIndex: "id",

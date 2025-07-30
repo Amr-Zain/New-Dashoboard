@@ -11,7 +11,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
 import { Route as MainRouteRouteImport } from './routes/_main/route'
 import { Route as MainIndexRouteImport } from './routes/_main/index'
@@ -29,10 +28,6 @@ import { Route as MainArticlesArticalIdEditRouteImport } from './routes/_main/ar
 const MainAboutLazyRouteImport = createFileRoute('/_main/about')()
 const MainSlidersIndexLazyRouteImport = createFileRoute('/_main/sliders/')()
 
-const LayoutRoute = LayoutRouteImport.update({
-  id: '/_layout',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -148,7 +143,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_main': typeof MainRouteRouteWithChildren
   '/auth': typeof AuthRouteRouteWithChildren
-  '/_layout': typeof LayoutRoute
   '/_main/profile': typeof MainProfileRoute
   '/auth/login': typeof AuthLoginRoute
   '/_main/about': typeof MainAboutLazyRoute
@@ -200,7 +194,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_main'
     | '/auth'
-    | '/_layout'
     | '/_main/profile'
     | '/auth/login'
     | '/_main/about'
@@ -219,18 +212,10 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   MainRouteRoute: typeof MainRouteRouteWithChildren
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
-  LayoutRoute: typeof LayoutRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_layout': {
-      id: '/_layout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof LayoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -388,7 +373,6 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   MainRouteRoute: MainRouteRouteWithChildren,
   AuthRouteRoute: AuthRouteRouteWithChildren,
-  LayoutRoute: LayoutRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
